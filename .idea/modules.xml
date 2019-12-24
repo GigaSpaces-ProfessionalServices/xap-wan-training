@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/BillBuddyAccountFeeder/BillBuddyAccountFeeder.iml" filepath="$PROJECT_DIR$/BillBuddyAccountFeeder/BillBuddyAccountFeeder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BillBuddyModel/BillBuddyModel.iml" filepath="$PROJECT_DIR$/BillBuddyModel/BillBuddyModel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lab2-solution.iml" filepath="$PROJECT_DIR$/lab2-solution.iml" />
+    </modules>
+  </component>
+</project>
