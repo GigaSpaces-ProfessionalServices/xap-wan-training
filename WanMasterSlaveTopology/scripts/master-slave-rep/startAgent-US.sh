@@ -7,7 +7,6 @@ export GS_OPTIONS_EXT="${GS_OPTIONS_EXT} -Dcom.sun.jini.reggie.initialUnicastDis
 export GS_OPTIONS_EXT="${GS_OPTIONS_EXT} -Dcom.gigaspaces.system.registryPort=10198"
 export GS_OPTIONS_EXT="${GS_OPTIONS_EXT} -Dcom.gigaspaces.start.httpPort=9913"
 export GS_OPTIONS_EXT="${GS_OPTIONS_EXT} -Dcom.gs.zones=US"
-export GS_ZOOKEEPER_SERVER_CONFIG_FILE="/Users/yuval/XAPWANTraining/labs/lab2-exercise/xap-wan-training/WanMasterSlaveTopology/scripts/master-slave-rep/zoo_us.cfg"
 # Modify this as needed
 export GS_GSC_OPTIONS=-Xmx128m
 
