@@ -75,25 +75,6 @@ Then we will configure EMEA to also be a Master site, deploy and test it.
        [INFO] ------------------------------------------------------------------------
 
 
-
-2.1.7   Run mvn xap:intellij <br />
-######This will add the predefined Run Configuration Application to your Intellij IDE.
-
-    yuval-pc:xap-wan-training yuval$ mvn xap:intellij
-    
-      [INFO] Reactor Summary:
-      [INFO] 
-      [INFO] lab2-exercise 1.0-SNAPSHOT ......................... SUCCESS [  0.812 s]
-      [INFO] BillBuddyModel ..................................... SKIPPED
-      [INFO] BillBuddy_Space .................................... SKIPPED
-      [INFO] BillBuddyAccountFeeder ............................. SKIPPED
-      [INFO] BillBuddyPaymentFeeder ............................. SKIPPED
-      [INFO] BillBuddyPersistency 1.0-SNAPSHOT .................. SKIPPED
-      [INFO] ------------------------------------------------------------------------
-      [INFO] BUILD SUCCESS
-      [INFO] ------------------------------------------------------------------------
-
-
     
 ## 2.2	Wan Master to Slave Topology Replication
 
