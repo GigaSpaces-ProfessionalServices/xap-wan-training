@@ -16,15 +16,8 @@ Then we will configure EMEA to also be a Master site, deploy and test it.
         vi ~/.bash_profile <br />
         export GS_HOME=~/XAP-Builds/gigaspaces-xap-enterprise-15.0.0
         export GS_WAN_TRAINING_HOME=~/XAPWANTraining
-                     
-3.  Edit the $GS_HOME/bin/setenv-overrides.sh/bat script and set XAP_MANAGER_SERVERS to your specific ip or hostname . <br />
-For example: 
- 
- 
-    export XAP_MANAGER_SERVERS=yuval-pc
-
-            
-4.  Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Units using gs-ui)
+                               
+3.  Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Units using gs-ui)
     
 ## 2.1	Clone and build the project lab
 
