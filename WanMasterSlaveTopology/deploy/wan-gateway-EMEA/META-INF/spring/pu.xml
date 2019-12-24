@@ -7,10 +7,12 @@
        http://www.openspaces.org/schema/core/gateway
        http://www.openspaces.org/schema/15.0/core/gateway/openspaces-gateway.xsd">
 
-    <os-gateway:sink id="sink" local-gateway-name="EMEA" gateway-lookups="gatewayLookups"
-                     local-space-url="jini://*/*/wanSpaceEMEA">
+    <!--  TODO FIX os-gateway:sink replace TODO in local gateway name local-space-url and os-gateway:source name -->
+    <!--  TODO with proper values -->
+    <os-gateway:sink id="sink" local-gateway-name="TODO" gateway-lookups="gatewayLookups"
+                     local-space-url="TODO">
         <os-gateway:sources>
-            <os-gateway:source name="US"/>
+            <os-gateway:source name="TODO"/>
         </os-gateway:sources>
     </os-gateway:sink>
 

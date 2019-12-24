@@ -7,8 +7,10 @@
        http://www.openspaces.org/schema/core/gateway
        http://www.openspaces.org/schema/15.0/core/gateway/openspaces-gateway.xsd">
 
-    <os-gateway:delegator id="delegator" local-gateway-name="US" gateway-lookups="gatewayLookups">
-        <os-gateway:delegation target="EMEA"/>
+    <!--  TODO FIX os-gateway:delegator replace TODO in local gateway name and os-gateway:delegation target -->
+    <!--  TODO with proper US & EMEA -->
+    <os-gateway:delegator id="delegator" local-gateway-name="TODO" gateway-lookups="gatewayLookups">
+        <os-gateway:delegation target="TODO"/>
     </os-gateway:delegator>
 
     <os-gateway:lookups id="gatewayLookups">

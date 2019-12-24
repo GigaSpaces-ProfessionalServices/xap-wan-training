@@ -24,7 +24,8 @@
 	<os-core:giga-space-context />
 	<os-remoting:annotation-support />
 
-	<os-gateway:targets id="gatewayTargets"	local-gateway-name="EMEA">
-		<os-gateway:target name="US" />
+	<!--  TODO replace TODO in os-gateway:targets definition local gateway name and os-gateway:target name -->
+	<os-gateway:targets id="gatewayTargets"	local-gateway-name="TODO">
+		<os-gateway:target name="TODO" />
 	</os-gateway:targets>
 </beans>

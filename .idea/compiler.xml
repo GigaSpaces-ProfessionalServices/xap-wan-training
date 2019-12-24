@@ -6,14 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="BillBuddyModel" />
         <module name="BillBuddyAccountFeeder" />
+        <module name="BillBuddyModel" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="BillBuddyAccountFeeder" target="1.8" />
       <module name="BillBuddyModel" target="1.8" />
-      <module name="lab2-solution" target="1.8" />
+      <module name="lab2-exercise" target="1.8" />
       <module name="Test" target="1.5" />
     </bytecodeTargetLevel>
   </component>

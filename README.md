@@ -1,4 +1,4 @@
-# Lab2-solution - wan gateway basics
+# Lab2-exercise - wan gateway basics
 
 ## Lab Goals
 
@@ -23,22 +23,22 @@ Then we will configure EMEA to also be a Master site, deploy and test it.
 
 2.1.1 Create lab directory
 
-    mkdir ~/XAPWANTraining/labs/lab2-solution
+    mkdir ~/XAPWANTraining/labs/lab2-exercise
       
 2.1.2 Clone the project from git
     
-    cd ~/XAPWANTraining/labs/lab2-solution
+    cd ~/XAPWANTraining/labs/lab2-exercise
     git clone https://github.com/GigaSpaces-ProfessionalServices/xap-wan-training.git 
     
-2.1.3 Checkout lab2-solution
+2.1.3 Checkout lab2-exercise
     
     cd xap-wan-training
-    git checkout lab2-solution
+    git checkout lab2-exercise
     
 2.1.4 Verify that the branch has been checked out.
     
     git branch
-    * lab2-solution
+    * lab2-exercise
       master 
     
 2.1.5 Open xap-wan-training project with intellij <br />
@@ -67,7 +67,7 @@ Then we will configure EMEA to also be a Master site, deploy and test it.
        [INFO] ------------------------------------------------------------------------
        [INFO] Reactor Summary:
        [INFO] 
-       [INFO] lab2-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.701 s]
+       [INFO] lab2-exercise 1.0-SNAPSHOT ......................... SUCCESS [  0.701 s]
        [INFO] BillBuddyModel ..................................... SUCCESS [  4.888 s]
        [INFO] BillBuddyAccountFeeder 1.0-SNAPSHOT ................ SUCCESS [  1.971 s]
        [INFO] ------------------------------------------------------------------------
@@ -83,7 +83,7 @@ Then we will configure EMEA to also be a Master site, deploy and test it.
     
       [INFO] Reactor Summary:
       [INFO] 
-      [INFO] lab2-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.812 s]
+      [INFO] lab2-exercise 1.0-SNAPSHOT ......................... SUCCESS [  0.812 s]
       [INFO] BillBuddyModel ..................................... SKIPPED
       [INFO] BillBuddy_Space .................................... SKIPPED
       [INFO] BillBuddyAccountFeeder ............................. SKIPPED
@@ -105,7 +105,7 @@ We will simulate a master slave topology using 2 sites: US which will serve as M
  
    
    
-###### NOTE: As this a solution lab, the next "TODO" parts already done for you.
+###### NOTE: As this a exercise lab, the next "TODO" parts already done for you.
 
 
 2.1.1	Open project “WanMasterSlaveTopology” <br />
@@ -122,12 +122,12 @@ We will simulate a master slave topology using 2 sites: US which will serve as M
 Note: For all .bat/sh executions use the appropriate command window (cmd) or Linux terminal. <br /> 
 &nbsp;  a.	Open CMD or Linux shell and change directory: <br />
  
-    cd $GS_WAN_TRAINING_HOME/labs/lab2-solution/xap-wan-training/WanMasterSlaveTopology/scripts
+    cd $GS_WAN_TRAINING_HOME/labs/lab2-exercise/xap-wan-training/WanMasterSlaveTopology/scripts
   
    
 &nbsp;  b.	Examine and Run /scripts/gs-ui.sh/bat and wait for GS-UI to start <br />
 &nbsp;  c.	Examine and Run /scripts/master-slave-rep/cleanDeployFolder.sh/bat <br >
-&nbsp;&nbsp;    that cleans any older deployments (Remember to do that any time you run your solution). <br /> 
+&nbsp;&nbsp;    that cleans any older deployments (Remember to do that any time you run your exercise). <br /> 
 &nbsp;  d.	Examine and Start the US Zone Agent  - run scripts/master-slave-rep/startAgent-US.bat <br />
 &nbsp;  e.	Examine and Start the EMEA Zone Agent  - run scripts/master-slave-rep/startAgent-EMEA.bat <br />
 &nbsp;  f.	Use gs-ui or gs-web-ui for validation that the grid for both US & EMEA zones is up and running. <br /> 
