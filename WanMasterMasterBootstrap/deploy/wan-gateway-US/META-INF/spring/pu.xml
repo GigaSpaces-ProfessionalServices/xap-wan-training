@@ -11,8 +11,9 @@
         <os-gateway:delegation target="EMEA"/>
     </os-gateway:delegator>
 
+    <!-- TODO  Replace the TODO mark in the sink implementation with bootstrap definition -->
     <os-gateway:sink id="sink" local-gateway-name="US" gateway-lookups="gatewayLookups"
-                     local-space-url="jini://*/*/wanSpaceUS" requires-bootstrap="true">
+                     local-space-url="jini://*/*/wanSpaceUS" //TODO>
         <os-gateway:sources>
             <os-gateway:source name="EMEA"/>
         </os-gateway:sources>
