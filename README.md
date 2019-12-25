@@ -109,18 +109,18 @@ Note: For all .bat/sh executions use the appropriate command window (cmd) or Lin
 &nbsp;  b.	Examine and Run /scripts/gs-ui.sh/bat and wait for GS-UI to start <br />
 &nbsp;  c.	Examine and Run /scripts/master-slave-rep/cleanDeployFolder.sh/bat <br >
 &nbsp;&nbsp;    that cleans any older deployments (Remember to do that any time you run your exercise). <br /> 
-&nbsp;  d.	Examine and Start the US Zone Agent  - run scripts/master-slave-rep/startAgent-US.bat <br />
-&nbsp;  e.	Examine and Start the EMEA Zone Agent  - run scripts/master-slave-rep/startAgent-EMEA.bat <br />
+&nbsp;  d.	Examine and Start the US Zone Agent  - run scripts/master-slave-rep/startAgent-US.bat/sh <br />
+&nbsp;  e.	Examine and Start the EMEA Zone Agent  - run scripts/master-slave-rep/startAgent-EMEA.bat/sh <br />
 &nbsp;  f.	Use gs-ui or gs-web-ui for validation that the grid for both US & EMEA zones is up and running. <br /> 
 
    ![snapshot](Pictures/Picture2.png)
    
-   g.	Deploy the US deployment (wan-space-US & wan-gateway-US), Run scripts/master-slave-rep/deployUS.bat
+   g.	Deploy the US deployment (wan-space-US & wan-gateway-US), Run scripts/master-slave-rep/deployUS.bat/sh
    h.	Validate the US Deployment
 
    ![snapshot](Pictures/Picture3.png)
    
-   i.	Deploy the EMEA deployment (wan-space-EMEA & wan-gateway-EMEA), Run scripts/master-slave-rep/deployEMEA.bat
+   i.	Deploy the EMEA deployment (wan-space-EMEA & wan-gateway-EMEA), Run scripts/master-slave-rep/deployEMEA.bat/sh
    j.	Validate the EMEA Deployment
    
    ![snapshot](Pictures/Picture4.png)
