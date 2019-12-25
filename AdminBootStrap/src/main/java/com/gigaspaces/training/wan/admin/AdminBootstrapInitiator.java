@@ -12,14 +12,20 @@ public class AdminBootstrapInitiator {
 
 	public static void main(String[] args) {
 		System.out.println("Creating Admin Factory");
-		Admin admin = new AdminFactory().addLocator("localhost:4266").create();
+		// TODO: get Admin Factory
+
 		System.out.println("Waiting for US gateway");
-		Gateway USGateway = admin.getGateways().waitFor("US");
+
+		// TODO: get US Gateway
+
 		System.out.println("Waiting for US to connect to EMEA Sink");
-		GatewaySinkSource EMEASinkSource = USGateway.waitForSinkSource("EMEA");
+
+		// TODO: get US Gateway to connect to EMEA sink
+
 		System.out.println("Starting Boostrap");
-		BootstrapResult bootstrapResult = EMEASinkSource.bootstrapFromGatewayAndWait(3600, TimeUnit.SECONDS);
-		System.out.println(bootstrapResult.toString());
+
+		// TODO: Start bootstrap process.
+
 		System.out.println("Bootstrap process finished");
 	}
 }
