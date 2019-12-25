@@ -6,5 +6,4 @@ set LAB_FOLDER=%~dp0\..
 set GS_LOOKUP_GROUPS="US"
 set GS_LOOKUP_LOCATORS=127.0.0.1:4266
 
-"%JAVA_HOME%"\bin\java -cp %GS_JARS%;feeder.jar; com.gigaspaces.training.billbuddy.client.AccountFeeder 127.0.0.1:4266 wanSpaceUS
-
+"%JAVA_HOME%"\bin\java -cp %GS_JARS%;..\..\BillBuddyAccountFeeder\target\BillBuddyAccountFeeder.jar;..\..\BillBuddyModel\target\BillBuddyModel.jar; com.gigaspaces.training.billbuddy.client.AccountFeeder 127.0.0.1:4266 wanSpaceUS
