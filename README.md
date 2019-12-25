@@ -1,13 +1,13 @@
-# Lab2-solution - wan gateway basics
+# Lab3-solution - WAN Bootstrapping
 
 ## Lab Goals
-
-1. Be introduced and gain basic experienced with WAN. <br />
-2. Configure master slave and master to master over WAN gateway. <br />
+Configure WAN bootstrapping <br />
 
 ## Lab Description
-In this lab you will start XAP infrastructure services. You will configure the WAN Gateway Master-Slave setup. Deploy a WAN Gateway Master-Slave setup, preform writing into the master slave and observe the replication process to the slave space. You will use the GS-UI & GS-WEBUI to deploy & monitor the deployment. We will simulate 2 sites US and EMEA. In this case US site will serve as Master site.
-Then we will configure EMEA to also be a Master site, deploy and test it.
+In this lab you already have the Master to Master configuration setup <br />
+but this time you will start EMEA site only and use its feeder to add data to it. <br /> 
+Only after the feeder has ended its execution you will start the US site <br />
+and configure it to bootstrap itself from the EMEA site. <br />
 
 ## Lab setup
 1.  Add GS_HOME system variable and point to Gigaspaces home directory: <br />
@@ -23,32 +23,29 @@ Then we will configure EMEA to also be a Master site, deploy and test it.
 
 2.1.1 Create lab directory
 
-    mkdir ~/XAPWANTraining/labs/lab2-solution
+    mkdir ~/XAPWANTraining/labs/Lab3-solution
       
 2.1.2 Clone the project from git
     
-    cd ~/XAPWANTraining/labs/lab2-solution
+    cd ~/XAPWANTraining/labs/Lab3-solution
     git clone https://github.com/GigaSpaces-ProfessionalServices/xap-wan-training.git 
     
-2.1.3 Checkout lab2-solution
+2.1.3 Checkout Lab3-solution
     
     cd xap-wan-training
-    git checkout lab2-solution
+    git checkout Lab3-solution
     
 2.1.4 Verify that the branch has been checked out.
     
     git branch
-    * lab2-solution
+    * Lab3-solution
       master 
     
 2.1.5 Open xap-wan-training project with intellij <br />
 
-#### Notice the following 4 modules in Intellij: ####
+#### Notice the following 3 modules in Intellij: ####
 
-#### WanMasterSlaveTopology  #####
-###### First part of the Lab exercise. <br />
-
-#### WanMasterMasterTopology #####
+#### WanMasterMasterBootstrap #####
 ###### Second part of the Lab exercise
 
 #### BillBuddyModel #####
@@ -67,7 +64,7 @@ Then we will configure EMEA to also be a Master site, deploy and test it.
        [INFO] ------------------------------------------------------------------------
        [INFO] Reactor Summary:
        [INFO] 
-       [INFO] lab2-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.701 s]
+       [INFO] Lab3-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.701 s]
        [INFO] BillBuddyModel ..................................... SUCCESS [  4.888 s]
        [INFO] BillBuddyAccountFeeder 1.0-SNAPSHOT ................ SUCCESS [  1.971 s]
        [INFO] ------------------------------------------------------------------------
@@ -75,90 +72,43 @@ Then we will configure EMEA to also be a Master site, deploy and test it.
        [INFO] ------------------------------------------------------------------------
 
 
-
-2.1.7   Run mvn xap:intellij <br />
-######This will add the predefined Run Configuration Application to your Intellij IDE.
-
-    yuval-pc:xap-wan-training yuval$ mvn xap:intellij
     
-      [INFO] Reactor Summary:
-      [INFO] 
-      [INFO] lab2-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.812 s]
-      [INFO] BillBuddyModel ..................................... SKIPPED
-      [INFO] BillBuddy_Space .................................... SKIPPED
-      [INFO] BillBuddyAccountFeeder ............................. SKIPPED
-      [INFO] BillBuddyPaymentFeeder ............................. SKIPPED
-      [INFO] BillBuddyPersistency 1.0-SNAPSHOT .................. SKIPPED
-      [INFO] ------------------------------------------------------------------------
-      [INFO] BUILD SUCCESS
-      [INFO] ------------------------------------------------------------------------
+## 2.2  Wan Master to Master Topology Bootstrapping
 
+Now we will configure EMEA to be a master as well. <br />
+This will require adding a SINK at US, a delegator and gateway targets at EMEA. <br />
 
+###### NOTE: As this a exercise lab, the next "TODO" parts already done for you.
+
+a.	Open project “WanMasterMasterBootstrap” <br />
+b.	Configure wan-gateway-US to require bootstrap after startup. <br />
+    requires-bootstrap="true" <br />
+search for //TODO notes in pu.xml <br />
+c.	Open java file: com.gigaspaces.training.wan.admin.AdminBootstrapInitiator
+Add the missing commands to make bootstrapping happen. <br />
+Search for //TODO notes in java source file. <br /> 
+You should also use the presentation for list of commands required. <br />
+d.	Go to folder scripts in project “WanMasterMasterBootstrap” <br />
+e.	Run /scripts/gs-webui.bat/sh and wait for GS-WEBUI to start <br /> 
+f.	Run /scripts/master-master-boot/cleanDeployFolder.bat/sh that cleans any older deployments (Remember to do that any time you run your solution). <br />  
+g.	Start the EMEA Zone Agent  - run scripts/master-master-boot/startAgent-EMEA.bat/sh <br />
+h.	Start and deploy EMEA space and gateway  - run scripts/master-master-boot/deployEMEA.bat/sh <br />
+i.	Start the EMEA feeder to populate data in EMEA site - run feeder/EMEAfeeder.bat/sh <br />
+j.	Check EMEA space contains data. <br />
+
+![snapshot](Pictures/Picture1.png) <br />
     
-## 2.2	Wan Master to Slave Topology Replication
+k.	Start the US Zone (the bootstrapping site) Agent - run scripts/master-master-boot/startAgent-US.bat/sh <br />
+l.	Start and deploy US space and gateway - run scripts/master-master-boot/deployUS.bat/sh <br />
+m.	Check US space does not yet contain any data.
 
-Note: In this lab we use both gs-ui and gs-web-ui. <br />
-Feel free to choose your favorite although for monitoring WAN gateway it is recommended you will use gs-webui. <br />
-We will simulate a master slave topology using 2 sites: US which will serve as Master site and EMEA which will serve as Slave site.
+![snapshot](Pictures/Picture2.png) <br />
 
-   ![snapshot](Pictures/Picture1.png) <br />
- 
-   
-   
-###### NOTE: As this a solution lab, the next "TODO" parts already done for you.
+n.	Run using Eclipse the AdminBootstrapInitiator.java file in order to initiate the bootstrap process. <br />
+o.	Check bootstrap process done successfully by observing the log files: <br />
 
+![snapshot](Pictures/Picture3.png) <br />
 
-2.1.1	Open project “WanMasterSlaveTopology” <br />
-2.1.2	Define US Site Space <br />
-&nbsp;  a.	Open deploy/wan-space-US/META-INF/spring/pu.xml <br />
-&nbsp;  b.	Fix the TODO to add missing os-gateway:targets <br />
-2.1.3	Define US Site Gateway <br />
-&nbsp;  a.	Open deploy/wan-gateway-US/META-INF/spring/pu.xml <br />
-&nbsp;  b.	Fix the TODO to add missing os-gateway:delegator <br />
-2.1.4	Define EMEA Site Gateway <br />
-&nbsp;  a.	Open deploy/wan-gateway-EMEA/META-INF/spring/pu.xml <br />
-&nbsp;  b.	Fix the TODO to add missing os-gateway:sink <br />
-2.1.5	Run the Grid for Examination <br />
-Note: For all .bat/sh executions use the appropriate command window (cmd) or Linux terminal. <br /> 
-&nbsp;  a.	Open CMD or Linux shell and change directory: <br />
- 
-    cd $GS_WAN_TRAINING_HOME/labs/lab2-solution/xap-wan-training/WanMasterSlaveTopology/scripts
-  
-   
-&nbsp;  b.	Examine and Run /scripts/gs-ui.sh/bat and wait for GS-UI to start <br />
-&nbsp;  c.	Examine and Run /scripts/master-slave-rep/cleanDeployFolder.sh/bat <br >
-&nbsp;&nbsp;    that cleans any older deployments (Remember to do that any time you run your solution). <br /> 
-&nbsp;  d.	Examine and Start the US Zone Agent  - run scripts/master-slave-rep/startAgent-US.bat <br />
-&nbsp;  e.	Examine and Start the EMEA Zone Agent  - run scripts/master-slave-rep/startAgent-EMEA.bat <br />
-&nbsp;  f.	Use gs-ui or gs-web-ui for validation that the grid for both US & EMEA zones is up and running. <br /> 
+p.	Check bootstrap process done successfully by checking data in US site: <br />
 
-   ![snapshot](Pictures/Picture2.png)
-   
-   g.	Deploy the US deployment (wan-space-US & wan-gateway-US), Run scripts/master-slave-rep/deployUS.bat
-   h.	Validate the US Deployment
-
-   ![snapshot](Pictures/Picture3.png)
-   
-   i.	Deploy the EMEA deployment (wan-space-EMEA & wan-gateway-EMEA), Run scripts/master-slave-rep/deployEMEA.bat
-   j.	Validate the EMEA Deployment
-   
-   ![snapshot](Pictures/Picture4.png)
-   
-   k.	Populate information into US space to see it being replicated to the EMEA space – Run /WanMasterSlaveTopology/feeder/USfeeder.bat
-
-   ![snapshot](Pictures/Picture5.png)
-
-l.	Validate that you can see the same amount of object in both spaces.
-m.	Investigate specific object to make sure they are the same on both USspace & EMEA space using the Object Query
-
-n.	View the WAN Gateway view in the web-UI 
-
-   ![snapshot](Pictures/Picture6.png)
-   
-   o.	View the WAN Gateway outbound in the web-UI 
-   
-   ![snapshot](Pictures/Picture7.png)
-   
-   p.	Rerun the USfeeder while viewing the gateway outbound stats above and see if you get redo log stats and traffic stats
-   
-   ![snapshot](Pictures/Picture8.png) 
+![snapshot](Pictures/Picture4.png) <br />

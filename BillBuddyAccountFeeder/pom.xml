@@ -8,7 +8,7 @@
     <name>BillBuddyAccountFeeder</name>
     <parent>
         <groupId>com.gigaspaces.persist.training</groupId>
-        <artifactId>lab2-solution</artifactId>
+        <artifactId>Lab3-solution</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <properties>
