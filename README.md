@@ -1,4 +1,4 @@
-# Lab3-solution - WAN Bootstrapping
+# lab3-solution - WAN Bootstrapping
 
 ## Lab Goals
 Configure WAN bootstrapping <br />
@@ -23,22 +23,22 @@ and configure it to bootstrap itself from the EMEA site. <br />
 
 2.1.1 Create lab directory
 
-    mkdir ~/XAPWANTraining/labs/Lab3-solution
+    mkdir ~/XAPWANTraining/labs/lab3-solution
       
 2.1.2 Clone the project from git
     
-    cd ~/XAPWANTraining/labs/Lab3-solution
+    cd ~/XAPWANTraining/labs/lab3-solution
     git clone https://github.com/GigaSpaces-ProfessionalServices/xap-wan-training.git 
     
-2.1.3 Checkout Lab3-solution
+2.1.3 Checkout lab3-solution
     
     cd xap-wan-training
-    git checkout Lab3-solution
+    git checkout lab3-solution
     
 2.1.4 Verify that the branch has been checked out.
     
     git branch
-    * Lab3-solution
+    * lab3-solution
       master 
     
 2.1.5 Open xap-wan-training project with intellij <br />
@@ -64,7 +64,7 @@ and configure it to bootstrap itself from the EMEA site. <br />
        [INFO] ------------------------------------------------------------------------
        [INFO] Reactor Summary:
        [INFO] 
-       [INFO] Lab3-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.701 s]
+       [INFO] lab3-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.701 s]
        [INFO] BillBuddyModel ..................................... SUCCESS [  4.888 s]
        [INFO] BillBuddyAccountFeeder 1.0-SNAPSHOT ................ SUCCESS [  1.971 s]
        [INFO] ------------------------------------------------------------------------
