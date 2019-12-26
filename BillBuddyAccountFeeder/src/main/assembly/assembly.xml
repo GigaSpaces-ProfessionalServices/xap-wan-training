@@ -21,7 +21,7 @@
       <useTransitiveDependencies>false</useTransitiveDependencies>
       <outputDirectory>lib</outputDirectory>
       <excludes>
-        <exclude>com.gigaspaces.persist.training:BillBuddyModel</exclude>
+        <exclude>com.gigaspaces.training.wan.billbuddy.model:BillBuddyModel</exclude>
       </excludes>
     </dependencySet>
     <dependencySet>
@@ -30,7 +30,7 @@
       <useTransitiveFiltering>true</useTransitiveFiltering>
       <outputDirectory>lib</outputDirectory>
       <includes>
-        <include>com.gigaspaces.persist.training:BillBuddyModel</include>
+        <include>com.gigaspaces.training.wan.billbuddy.model:BillBuddyModel</include>
       </includes>
     </dependencySet>
   </dependencySets>

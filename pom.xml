@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.gigaspaces.persist.training</groupId>
-    <artifactId>Lab3-solution</artifactId>
+    <groupId>com.gigaspaces.training.wan</groupId>
+    <artifactId>lab4-solution</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Lab3-solution</name>
+    <name>lab4-solution</name>
     <packaging>pom</packaging>
     <repositories>
         <repository>
@@ -29,7 +29,7 @@
     <modules>
         <module>BillBuddyModel</module>
         <module>BillBuddyAccountFeeder</module>
-        <module>AdminBootStrap</module>
+        <module>ReplicationFilter</module>
     </modules>
     <dependencies>
         <dependency>

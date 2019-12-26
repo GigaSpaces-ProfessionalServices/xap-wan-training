@@ -2,11 +2,11 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/AdminBootStrap/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/AdminBootStrap/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/BillBuddyAccountFeeder" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/BillBuddyAccountFeeder/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/BillBuddyModel" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/BillBuddyModel/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ReplicationFilter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ReplicationFilter/src/main/resources" charset="UTF-8" />
   </component>
 </project>

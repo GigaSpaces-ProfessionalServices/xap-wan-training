@@ -1,11 +1,11 @@
-package com.gigaspaces.training.billbuddy.client;
+package com.gigaspaces.training.wan.billbuddy.client;
 
 
 import java.util.ArrayList;
 import org.openspaces.core.GigaSpace;
-import com.gigaspaces.training.billbuddy.model.AccountStatus;
-import com.gigaspaces.training.billbuddy.model.CategoryType;
-import com.gigaspaces.training.billbuddy.model.Merchant;
+import com.gigaspaces.training.wan.billbuddy.model.AccountStatus;
+import com.gigaspaces.training.wan.billbuddy.model.CategoryType;
+import com.gigaspaces.training.wan.billbuddy.model.Merchant;
 
 /** 
  * Merchant Feeder class gets merchant name list which is stored in merchants data member. 

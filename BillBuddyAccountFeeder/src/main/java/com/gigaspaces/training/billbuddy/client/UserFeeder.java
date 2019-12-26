@@ -1,14 +1,14 @@
-package com.gigaspaces.training.billbuddy.client;
+package com.gigaspaces.training.wan.billbuddy.client;
 import java.util.ArrayList;
 import java.util.Random;
 
 import org.openspaces.core.GigaSpace;
 
-import com.gigaspaces.training.billbuddy.model.AccountStatus;
-import com.gigaspaces.training.billbuddy.model.Address;
-import com.gigaspaces.training.billbuddy.model.Continent;
-import com.gigaspaces.training.billbuddy.model.CountryNames;
-import com.gigaspaces.training.billbuddy.model.User;
+import com.gigaspaces.training.wan.billbuddy.model.AccountStatus;
+import com.gigaspaces.training.wan.billbuddy.model.Address;
+import com.gigaspaces.training.wan.billbuddy.model.Continent;
+import com.gigaspaces.training.wan.billbuddy.model.CountryNames;
+import com.gigaspaces.training.wan.billbuddy.model.User;
 
 /** 
  * User Feeder class reads userNameList which is stored in users data member. 
