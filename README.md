@@ -1,4 +1,4 @@
-# lab4-solution - WAN Gateway Filter
+# lab4-exercise - WAN Gateway Filter
 
 ## Lab Goals
 Implement and configure the use of WAN Gateway Filter <br />
@@ -20,22 +20,22 @@ During this lab you will deploy WAN Gateway Master to Master topology with Filte
 
 2.1.1 Create lab directory
 
-    mkdir ~/XAPWANTraining/labs/lab4-solution
+    mkdir ~/XAPWANTraining/labs/lab4-exercise
       
 2.1.2 Clone the project from git
     
-    cd ~/XAPWANTraining/labs/lab4-solution
+    cd ~/XAPWANTraining/labs/lab4-exercise
     git clone https://github.com/GigaSpaces-ProfessionalServices/xap-wan-training.git 
     
-2.1.3 Checkout lab4-solution
+2.1.3 Checkout lab4-exercise
     
     cd xap-wan-training
-    git checkout lab4-solution
+    git checkout lab4-exercise
     
 2.1.4 Verify that the branch has been checked out.
     
     git branch
-    * lab4-solution
+    * lab4-exercise
       master 
     
 2.1.5 Open xap-wan-training project with intellij <br />
@@ -62,7 +62,7 @@ During this lab you will deploy WAN Gateway Master to Master topology with Filte
        [INFO] ------------------------------------------------------------------------
        [INFO] Reactor Summary:
        [INFO] 
-       [INFO] lab4-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.490 s]
+       [INFO] lab4-exercise 1.0-SNAPSHOT ......................... SUCCESS [  0.490 s]
        [INFO] BillBuddyModel ..................................... SUCCESS [  3.582 s]
        [INFO] BillBuddyAccountFeeder ............................. SUCCESS [  2.098 s]
        [INFO] ReplicationFilter 1.0-SNAPSHOT ..................... SUCCESS [  0.921 s]
