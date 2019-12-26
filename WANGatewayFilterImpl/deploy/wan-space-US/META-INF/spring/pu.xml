@@ -22,11 +22,11 @@
 	<!-- Enable support for @Polling annotation -->
 	<os-events:annotation-support />
 
-	<bean id="Filter" class="com.gigaspaces.training.wan.imp.filter.ReplicationFilter"/>
+	<bean id="Filter" class="TODO"/>
 	
 	<os-core:space id="space" url="/./wanSpaceUS" gateway-targets="gatewayTargets" >
 		  <os-core:space-replication-filter>
-            <os-core:output-filter ref="Filter"/>
+            <os-core:output-filter ref="TODO"/>
           </os-core:space-replication-filter>
 	</os-core:space>
 	
