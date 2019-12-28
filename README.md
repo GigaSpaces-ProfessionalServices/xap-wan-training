@@ -1,10 +1,15 @@
-# lab4-solution - WAN Gateway Filter
+# lab5-solution - WAN Gateway conflict resolution
 
 ## Lab Goals
-Implement and configure the use of WAN Gateway Filter <br />
+1. Configure and develop conflict resolution handler <br />
+2. Experience conflict resolution <br />
+
 
 ## Lab Description
-During this lab you will deploy WAN Gateway Master to Master topology with Filter and examine it. <br />
+During this lab you will deploy WAN Gateway Master to Master topology with conflict resolution implementation. <br />
+The lab will simulate the following: <br />
+1. Conflicts arriving from EMEA will be discarded. <br />
+2. Conflicts arriving from US will be override EMEA (If override is supported). <br />
 
 ## Lab setup
 1.  Add GS_HOME system variable and point to Gigaspaces home directory: <br />
@@ -20,31 +25,31 @@ During this lab you will deploy WAN Gateway Master to Master topology with Filte
 
 2.1.1 Create lab directory
 
-    mkdir ~/XAPWANTraining/labs/lab4-solution
+    mkdir ~/XAPWANTraining/labs/lab5-solution
       
 2.1.2 Clone the project from git
     
-    cd ~/XAPWANTraining/labs/lab4-solution
+    cd ~/XAPWANTraining/labs/lab5-solution
     git clone https://github.com/GigaSpaces-ProfessionalServices/xap-wan-training.git 
     
-2.1.3 Checkout lab4-solution
+2.1.3 Checkout lab5-solution
     
     cd xap-wan-training
-    git checkout lab4-solution
+    git checkout lab5-solution
     
 2.1.4 Verify that the branch has been checked out.
     
     git branch
-    * lab4-solution
+    * lab5-solution
       master 
     
 2.1.5 Open xap-wan-training project with intellij <br />
 
 #### Notice the following 3 modules in Intellij: ####
 
-#### WANGatewayFilterImpl #####
-###### Implementation project for WAN Filter. Under deploy folder you will only see three (3) PU configurations. You will not see the
-###### wan-space-US PU which will contain the filter and therefore is located under src/main/resources and src/main/java respectfuly.
+
+#### WANGatewayConflictResolution #####
+###### Implementation project for WAN Conflict Resolution handler
 
 #### BillBuddyModel #####
 ###### Defines all declarations that are required, in space side as well as the client application side.
@@ -59,63 +64,76 @@ During this lab you will deploy WAN Gateway Master to Master topology with Filte
     yuval-pc:xap-wan-training yuval$ mvn install
     
     
-       [INFO] ------------------------------------------------------------------------
-       [INFO] Reactor Summary:
-       [INFO] 
-       [INFO] lab4-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.490 s]
-       [INFO] BillBuddyModel ..................................... SUCCESS [  3.582 s]
-       [INFO] BillBuddyAccountFeeder ............................. SUCCESS [  2.098 s]
-       [INFO] ReplicationFilter 1.0-SNAPSHOT ..................... SUCCESS [  0.921 s]
-       [INFO] ------------------------------------------------------------------------
-       [INFO] BUILD SUCCESS
-       [INFO] ------------------------------------------------------------------------
+     [INFO] ------------------------------------------------------------------------
+     [INFO] Reactor Summary:
+     [INFO] 
+     [INFO] lab5-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.621 s]
+     [INFO] BillBuddyModel ..................................... SUCCESS [  4.937 s]
+     [INFO] BillBuddyAccountFeeder ............................. SUCCESS [  1.938 s]
+     [INFO] ConflictResolution 1.0-SNAPSHOT ..................... SUCCESS [  0.853 s]
+     [INFO] ------------------------------------------------------------------------
+     [INFO] BUILD SUCCESS
+     [INFO] ------------------------------------------------------------------------
+
 
 
     
-## 2.2  Create WAN Filter Implementation
+## 2.2  WAN Gateway Conflict Resolution
 
-2.2.1	 Open project WANGatewayImp <br />
-2.2.2	 Our Filter will control replication between US & EMEA. <br /> 
-         The filter will replicate to EMEA user objects that meet the following conditions: <br />
-         
-1.	User was created in US <br />
-2.	User.Continent = Europe <br />
- 
-2.2.3	Edit class ReplicationFilter and implement a process method 
-        to filter from all Users created replicated to EMEA only those that have Continent attribute equals to “Europe”. <br />
-a.	Fix TODO message in the object and implement process method.
+2.2.1	 Open module ConflictResolution <br />
+2.2.2	 Our conflict handler provide automated resolution when there are conflict between sites US & EMEA.  <br />        
+2.2.3	Edit class UserConflictHandler and implement onDataConflict method that will be executed when there is conflict between entries. <br />
+    a. Fix TODO message in the object and implement onDataConflict method. <br />
 
 ![snapshot](Pictures/Picture1.png) <br />
 
 
-2.2.4	Edit wan-space-US pu.xml located in src/main/java/META-INF <br />
+2.2.4	Edit US gateway pu.xml located in deploy/wan-gateway-US/META-INF/spring/pu.xml <br />
  
-a.	Fix TODO in the PU.xml to include package were filter is located <br />
-b.	Fix TODO in the PU.xml fix os-core:space-replication-filter with your filter id name. <br />
+a.	Fix TODO in the PU.xml to include bean definition were conflict handler is located <br />
+b.	Fix TODO in the PU.xml fix os-gateway:error-handling with your conflict resolution id name. <br />
 
 ![snapshot](Pictures/Picture2.png) <br />
 
-2.2.5	Test your solution & validate that users created by US feeder are replicated to EMEA only if User.location equals to Continent.Europe <br />
-a.	Go to folder scripts in project “WANGatewayFilterImpl” <br />
-b.	Run /scripts/gs-webui.bat and wait for GS-WEBUI to start <br />
-c.	Run /scripts/master-master-filter/cleanDeployFolder.bat that cleans any older deployments (Remember to do that any time you run your solution). <br />  
-d.	Start the US Zone Agent  - run scripts/master-master-filter/startAgent-US.bat <br />
-e.	Start the HK Zone Agent  - run scripts/master-master-filter/startAgent-EMEA.bat <br />
-f.	Validate that grid for both US & EMEA zone is up and running <br />
+2.2.5	Edit EMEA gateway pu.xml located in deploy/wan-gateway-EMEA/META-INF/spring/pu.xml <br />
+ 
+a.	Fix TODO in the PU.xml to in bean definition include package were conflict handler is located. <br />
+b.	Fix TODO in the PU.xml fix os-gateway:error-handling with your conflict resolution id name. <br />
 
 ![snapshot](Pictures/Picture3.png) <br />
 
-g.	Deploy the US deployment (wan-space-US & wan-gateway-US), Run scripts/master-master-filter/deployUS.bat <br />
-h.	Validate the US Deployment <br />
+2.2.5	Test your solution & validate that users created by US feeder are replicated to EMEA only if User.location equals to Continent.Europe <br />
+a.	Go to folder scripts in “WANGatewayConflictResolution” <br />
+b.	Run scripts/gs-webui.bat/sh and scripts/gs-ui.bat/sh <br />
+c.	Run /scripts/master-master-conflict-res/cleanDeployFolder.bat/sh that cleans any older deployments (Remember to do that any time you run your solution).  <br />
+d.	Run /scripts/master-master-conflict-res/copyConflictHandler.bat/sh to copy the conflict handler class files to the deployment folder (Remember to do that any time you change your handler).    
+e.	Start the US Zone Agent - run scripts/master-master-conflict-res/startAgent-US.bat/sh <br />
+f.	Start the HK Zone Agent  - run scripts/master-master-conflict-res/startAgent-EMEA.bat/sh <br />
+g.	Validate that grid for both US & EMEA zone is up and running <br />
 
 ![snapshot](Pictures/Picture4.png) <br />
 
-i.	Deploy the EMEA deployment (wan-space-EMEA & wan-gateway-EMEA), Run scripts/master-master-filter/deployEMEA.bat <br />
-j.	Validate the EMEA Deployment <br />
+
+h.	Deploy the US deployment (wan-space-US & wan-gateway-US), Run scripts/master-master-conflict-res/deployUS.bat/sh <br />
+i.	Validate the US Deployment <br />
 
 ![snapshot](Pictures/Picture5.png) <br />
 
-k.	Populate data into the US space – Run WANGatewayImp/feeder/USfeeder.bat <br />
-l.	Validate only users with Continent.Eurpoe have been replicated into the EMEA space (wan-space-EMEA) <br />
+j.	Deploy the EMEA deployment (wan-space-EMEA & wan-gateway-EMEA), Run scripts/master-master-conflict-res/deployEMEA.bat/sh <br />
+k.	Validate the EMEA Deployment <br />
 
 ![snapshot](Pictures/Picture6.png) <br />
+
+l.	Populate data into the US space & EMEA space at the same time altering the same User record – Run WANGatewayConflictResolution/feeder/feeder.bat/sh <br />
+m.	Examine GSA console for Conflict resolution messages <br />
+    a.	US GS-Agent Console <br />
+    b.	Check that incoming source is EMEA, check that resolution is abort (i.e. change from the EMEA site if there is a conflict is being discarded and from US resolution is OVERIDE). <br />
+
+
+![snapshot](Pictures/Picture7.png) <br />
+![snapshot](Pictures/Picture8.png) <br />
+
+   c.   EMEA GS-Agent Console <br />
+   d.	Check that incoming source is US, check that resolution is override (i.e. change from the US site if there is a conflict is overriding existing EMEA value).
+
+![snapshot](Pictures/Picture9.png) <br />

@@ -4,8 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BillBuddyAccountFeeder/BillBuddyAccountFeeder.iml" filepath="$PROJECT_DIR$/BillBuddyAccountFeeder/BillBuddyAccountFeeder.iml" />
       <module fileurl="file://$PROJECT_DIR$/BillBuddyModel/BillBuddyModel.iml" filepath="$PROJECT_DIR$/BillBuddyModel/BillBuddyModel.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ReplicationFilter/ReplicationFilter.iml" filepath="$PROJECT_DIR$/ReplicationFilter/ReplicationFilter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lab4-solution.iml" filepath="$PROJECT_DIR$/lab4-solution.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ConflictResolution/ConflictResolution.iml" filepath="$PROJECT_DIR$/ConflictResolution/ConflictResolution.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lab5-solution.iml" filepath="$PROJECT_DIR$/lab5-solution.iml" />
     </modules>
   </component>
 </project>
