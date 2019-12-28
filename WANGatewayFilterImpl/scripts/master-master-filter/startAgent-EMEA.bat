@@ -5,10 +5,10 @@ set GS_LOOKUP_GROUPS="EMEA"
 rem PLEASE replace 127.0.0.1 with relevant HOSTNAME in production
 set GS_LOOKUP_LOCATORS=127.0.0.1:4166
 
-set EXT_JAVA_OPTIONS=%EXT_JAVA_OPTIONS% -Dcom.sun.jini.reggie.initialUnicastDiscoveryPort=4166
-set EXT_JAVA_OPTIONS=%EXT_JAVA_OPTIONS% -Dcom.gigaspaces.system.registryPort=10098
-set EXT_JAVA_OPTIONS=%EXT_JAVA_OPTIONS% -Dcom.gigaspaces.start.httpPort=9813
-set EXT_JAVA_OPTIONS=%EXT_JAVA_OPTIONS% -Dcom.gs.zones=EMEA
+set GS_OPTIONS_EXT=%GS_OPTIONS_EXT% -Dcom.sun.jini.reggie.initialUnicastDiscoveryPort=4166
+set GS_OPTIONS_EXT=%GS_OPTIONS_EXT% -Dcom.gigaspaces.system.registryPort=10098
+set GS_OPTIONS_EXT=%GS_OPTIONS_EXT% -Dcom.gigaspaces.start.httpPort=9813
+set GS_OPTIONS_EXT=%GS_OPTIONS_EXT% -Dcom.gs.zones=EMEA
 
 rem Modify this as needed
 set GS_GSC_OPTIONS=-Xmx128m
