@@ -11,33 +11,15 @@ public class UserConflictHandler extends com.gigaspaces.cluster.replication.gate
 
 	@Override
 	public void onDataConflict(String sourceGatewayName, DataConflict conflict) {
-				
-		// If we get conflict and HK is the source then we disregard those changes
-		if (sourceGatewayName.equals("EMEA")) {
-			conflict.abortAll();
-		}
-		
-		// We treat US as higher priority all changes of US will over take
-		if (sourceGatewayName.equals("US")) {
-			for (DataConflictOperation operation : conflict.getOperations()) {
-				if (operation.hasConflict()) {
-					if ( operation.getConflictCause() instanceof EntryNotInSpaceConflict) {
-						operation.override();
-					}
-					if ( operation.getConflictCause() instanceof EntryAlreadyInSpaceConflict) {
-						operation.override();
-					}
-					if ( operation.getConflictCause() instanceof EntryVersionConflict) {
-						operation.override();
-					}
-					if ( operation.getConflictCause() instanceof EntryLockedUnderTransactionConflict) {
-						operation.override();
-					}
-					
-					
-				}
-			}
-		}
-	}
 
+		// TODO: Implement the missing capability:
+		// When conflicting changes are coming from EMEA to US disregard them
+		// When conflicting changes are coming from US to EMEA override existing EMEA values
+		// Use sourceGatewayName to distinguish the source name (defined in PU.XML as os-gateway:target)
+
+		// Use conflict.getOperations() to get the relevant operation when there is a conflict
+		// Use DataConflictOperation abort and override methods
+
+
+	}
 }

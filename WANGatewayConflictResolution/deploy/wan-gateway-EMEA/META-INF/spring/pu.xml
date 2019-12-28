@@ -17,7 +17,7 @@
             <os-gateway:source name="US"/>
         </os-gateway:sources>
 		
-		<os-gateway:error-handling conflict-resolver="conflictResolver" max-retries-on-tx-lock="5"
+		<os-gateway:error-handling conflict-resolver="TODO" max-retries-on-tx-lock="5"
 		tx-lock-retry-interval="100" />
 		
     </os-gateway:sink>
@@ -28,7 +28,7 @@
     </os-gateway:lookups>
 
 	  <!-- A conflict resolver implementation -->
-	<bean id="conflictResolver" class="com.gigaspaces.training.wan.imp.conflict.UserConflictHandler" />
+	<bean id="conflictResolver" class="TODO" />
   
 
 </beans>

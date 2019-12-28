@@ -1,4 +1,4 @@
-# lab5-solution - WAN Gateway conflict resolution
+# lab5-exercise - WAN Gateway conflict resolution
 
 ## Lab Goals
 1. Configure and develop conflict resolution handler <br />
@@ -25,22 +25,22 @@ The lab will simulate the following: <br />
 
 2.1.1 Create lab directory
 
-    mkdir ~/XAPWANTraining/labs/lab5-solution
+    mkdir ~/XAPWANTraining/labs/lab5-exercise
       
 2.1.2 Clone the project from git
     
-    cd ~/XAPWANTraining/labs/lab5-solution
+    cd ~/XAPWANTraining/labs/lab5-exercise
     git clone https://github.com/GigaSpaces-ProfessionalServices/xap-wan-training.git 
     
-2.1.3 Checkout lab5-solution
+2.1.3 Checkout lab5-exercise
     
     cd xap-wan-training
-    git checkout lab5-solution
+    git checkout lab5-exercise
     
 2.1.4 Verify that the branch has been checked out.
     
     git branch
-    * lab5-solution
+    * lab5-exercise
       master 
     
 2.1.5 Open xap-wan-training project with intellij <br />
@@ -67,7 +67,7 @@ The lab will simulate the following: <br />
      [INFO] ------------------------------------------------------------------------
      [INFO] Reactor Summary:
      [INFO] 
-     [INFO] lab5-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.621 s]
+     [INFO] lab5-exercise 1.0-SNAPSHOT ......................... SUCCESS [  0.621 s]
      [INFO] BillBuddyModel ..................................... SUCCESS [  4.937 s]
      [INFO] BillBuddyAccountFeeder ............................. SUCCESS [  1.938 s]
      [INFO] ConflictResolution 1.0-SNAPSHOT ..................... SUCCESS [  0.853 s]

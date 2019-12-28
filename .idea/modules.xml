@@ -5,7 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/BillBuddyAccountFeeder/BillBuddyAccountFeeder.iml" filepath="$PROJECT_DIR$/BillBuddyAccountFeeder/BillBuddyAccountFeeder.iml" />
       <module fileurl="file://$PROJECT_DIR$/BillBuddyModel/BillBuddyModel.iml" filepath="$PROJECT_DIR$/BillBuddyModel/BillBuddyModel.iml" />
       <module fileurl="file://$PROJECT_DIR$/ConflictResolution/ConflictResolution.iml" filepath="$PROJECT_DIR$/ConflictResolution/ConflictResolution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lab5-solution.iml" filepath="$PROJECT_DIR$/lab5-solution.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lab5-exercise.iml" filepath="$PROJECT_DIR$/lab5-exercise.iml" />
     </modules>
   </component>
 </project>
