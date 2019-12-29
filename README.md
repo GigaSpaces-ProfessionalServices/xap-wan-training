@@ -2,7 +2,7 @@
 
 
 ## Lab Goals
-Be able to start WAN simulation with Dockers <br />
+Be able to start WAN simulation using Dockers <br />
 
 ## Lab setup
 1.  Add GS_HOME system variable and point to Gigaspaces home directory: <br />
@@ -48,7 +48,7 @@ Be able to start WAN simulation with Dockers <br />
 
     docker run --name US --hostname=US -e GS_NIC_ADDRESS=172.17.0.2 -it -e GS_GSC_OPTIONS="-Xmx124m -Dcom.gs.zones=us_zone" -e GS_MANAGER_OPTIONS=-Xmx124m -e GS_GSA_OPTIONS=-Xmx124m -e XAP_LICENSE=tryme -p 8090:8090 -p 8099:8099 -v ~/docker/US/logs:/opt/gigaspaces/logs gigaspaces/xap-enterprise host run-agent --manager --webui --gsc=2
 
-2.2.4 Rnn Docker EMEA
+2.2.4 Run Docker EMEA
 
     docker run --name EMEA --hostname=EMEA -e GS_NIC_ADDRESS=172.17.0.3 -it -e GS_GSC_OPTIONS="-Xmx124m -Dcom.gs.zones=emea_zone" -e GS_MANAGER_OPTIONS=-Xmx124m -e GS_GSA_OPTIONS=-Xmx124m -e XAP_LICENSE=tryme -p 8091:8091 -v ~/docker/EMEA/logs:/opt/gigaspaces/logs gigaspaces/xap-enterprise host run-agent --manager --webui --gsc=2
 
