@@ -9,6 +9,9 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/AdminBootStrap/pom.xml" />
+        <option value="$PROJECT_DIR$/BillBuddyAccountFeeder/pom.xml" />
+        <option value="$PROJECT_DIR$/BillBuddyModel/pom.xml" />
+        <option value="$PROJECT_DIR$/ConflictResolution/pom.xml" />
         <option value="$PROJECT_DIR$/Test/pom.xml" />
       </set>
     </option>
