@@ -10,14 +10,22 @@ In this lab you will start XAP infrastructure services. You will configure the W
 Then we will configure EMEA to also be a Master site, deploy and test it.
 
 ## Lab setup
-1.  Add GS_HOME system variable and point to Gigaspaces home directory: <br />
-2.  Add export GS_WAN_TRAINING_HOME system variable and point to your WAN TRAINING directory: <br />
+
+Download the latest XAP Commercial Edition and extract it on your machine: <br />
+
+        cd ~
+        wget http://gigaspaces-releases-eu.s3.amazonaws.com/xap/15.0.0/gigaspaces-xap-enterprise-15.0.0.zip
+        unzip gigaspaces-xap-enterprise-15.0.0.zip
+
+
+1. Add GS_HOME system variable and point to Gigaspaces home directory: <br />
+2. Add export GS_WAN_TRAINING_HOME system variable and point to your WAN TRAINING directory: <br />
 
         vi ~/.bash_profile <br />
         export GS_HOME=~/XAP-Builds/gigaspaces-xap-enterprise-15.0.0
         export GS_WAN_TRAINING_HOME=~/XAPWANTraining
                                
-3.  Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Units using gs-ui)
+3. Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Units using gs-ui)
     
 ## 2.1	Clone and build the project lab
 
