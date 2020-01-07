@@ -18,32 +18,13 @@ public class ReplicationFilter implements IReplicationFilter {
 	@Override
 	public void init(IJSpace arg0, String arg1, ReplicationPolicy arg2) {
 		// TODO Auto-generated method stub
-		System.out.println("Starting HKReplicationFilter"); 
+		System.out.println("Starting USReplicationFilter");
 	}
 
 	@Override
 	public void process(int direction,
 			IReplicationFilterEntry replicationFilterEntry,
 			String replicationTargetName) {
-		if (replicationTargetName.equals("gateway:EMEA")) {
-			if (replicationFilterEntry.getClassName().equals(
-					User.class.getName())) {
-				Continent loc = (Continent) replicationFilterEntry
-						.getFieldValue("location");
-				if (loc != Continent.Europe) {
-					System.out.println("found user in region: " + loc
-							+ " DO NOT copy this user to EMEA");
-					replicationFilterEntry.discard();
-				} else {
-					System.out.println("found user in region: " + loc
-							+ " copy this user to EMEA");
-				}
-			}
-		} else {
-			System.out
-					.println("ReplicationFilter filter not defined for gateway:"
-							+ replicationTargetName);
-
-		}
+		// TODO replicate to EMEA only the users with location Europe
 	}
 }
