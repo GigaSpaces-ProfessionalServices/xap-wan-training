@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export GS_LOOKUP_GROUPS="US"
+export GS_LOOKUP_GROUPS="EMEA"
 export GS_JARS=${GS_HOME}/lib/required/*
 # PLEASE replace localhost with relevant HOSTNAME in production
 export GS_LOOKUP_LOCATORS=127.0.0.1:4166
