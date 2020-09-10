@@ -19,29 +19,9 @@ and configure it to bootstrap itself from the EMEA site. <br />
                                
 3.  Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Units using gs-ui)
     
-## 2.1	Clone and build the project lab
+## 2.1	Build the project lab
 
-2.1.1 Create lab directory
-
-    mkdir ~/XAPWANTraining/labs/lab3-exercise
-      
-2.1.2 Clone the project from git
-    
-    cd ~/XAPWANTraining/labs/lab3-exercise
-    git clone https://github.com/GigaSpaces-ProfessionalServices/xap-wan-training.git 
-    
-2.1.3 Checkout lab3-exercise
-    
-    cd xap-wan-training
-    git checkout lab3-exercise
-    
-2.1.4 Verify that the branch has been checked out.
-    
-    git branch
-    * lab3-exercise
-      master 
-    
-2.1.5 Open xap-wan-training project with intellij <br />
+2.1.1 Open xap-wan-training project with intellij <br />
 
 #### Notice the following 3 modules in Intellij: ####
 
@@ -56,7 +36,7 @@ and configure it to bootstrap itself from the EMEA site. <br />
 ###### A client application (PU) that will be executed in Intellij. This application is responsible for writing Users and Merchants to the space. <br />
 
        
-2.1.6 Run mvn install <br />
+2.1.2 Run mvn install <br />
 
     yuval-pc:xap-wan-training yuval$ mvn install
     

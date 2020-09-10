@@ -19,29 +19,9 @@ Then we will configure EMEA to also be a Master site, deploy and test it.
                                
 3.  Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Units using gs-ui)
     
-## 2.1	Clone and build the project lab
+## 2.1	Build the project lab
 
-2.1.1 Create lab directory
-
-    mkdir ~/XAPWANTraining/labs/lab2-exercise
-      
-2.1.2 Clone the project from git
-    
-    cd ~/XAPWANTraining/labs/lab2-exercise
-    git clone https://github.com/GigaSpaces-ProfessionalServices/xap-wan-training.git 
-    
-2.1.3 Checkout lab2-exercise
-    
-    cd xap-wan-training
-    git checkout lab2-exercise
-    
-2.1.4 Verify that the branch has been checked out.
-    
-    git branch
-    * lab2-exercise
-      master 
-    
-2.1.5 Open xap-wan-training project with intellij <br />
+2.1.1 Open xap-wan-training project with intellij <br />
 
 #### Notice the following 4 modules in Intellij: ####
 
@@ -59,7 +39,7 @@ Then we will configure EMEA to also be a Master site, deploy and test it.
 ###### A client application (PU) that will be executed in Intellij. This application is responsible for writing Users and Merchants to the space. <br />
 
        
-2.1.6 Run mvn install <br />
+2.1.2 Run mvn install <br />
 
     yuval-pc:xap-wan-training yuval$ mvn install
     
