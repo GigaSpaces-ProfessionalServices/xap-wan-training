@@ -9,7 +9,6 @@ export GS_OPTIONS_EXT="$GS_OPTIONS_EXT -Dcom.gigaspaces.start.httpPort=9913"
 export GS_OPTIONS_EXT="$GS_OPTIONS_EXT -Dcom.gs.zones=US"
 # Modify this as needed
 export GS_GSC_OPTIONS=-Xmx128m
-command_line='host run-agent --manager --gsc=2'
+command_line='gsa.gsm 1 gsa.lus 1 gsa.gsc 2'
 
-${GS_HOME}/bin/gs.sh $command_line
-
+${GS_HOME}/bin/gs-agent.sh $command_line
