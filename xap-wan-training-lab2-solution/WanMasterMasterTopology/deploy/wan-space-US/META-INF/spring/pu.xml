@@ -25,5 +25,6 @@
 
 	<os-gateway:targets id="gatewayTargets" local-gateway-name="US">
 		<os-gateway:target name="EMEA" />
+		<os-gateway:target name="APAC" />
 	</os-gateway:targets>
 </beans>
