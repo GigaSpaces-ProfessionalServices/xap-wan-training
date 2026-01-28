@@ -6,4 +6,4 @@ cd ../../deploy
 
 export GS_LOOKUP_LOCATORS=localhost:4266
 ${GS_HOME}/bin/gs.sh --cli-version=1 deploy -zones US wan-space-US
-${GS_HOME}/bin/gs.sh --cli-version=1 deploy -cluster total_members=2 -zones US wan-gateway-US
+${GS_HOME}/bin/gs.sh --cli-version=1 deploy -cluster total_members=1 -zones US wan-gateway-US
