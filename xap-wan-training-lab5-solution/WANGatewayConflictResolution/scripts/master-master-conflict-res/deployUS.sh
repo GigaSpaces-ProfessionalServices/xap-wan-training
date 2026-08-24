@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 
-cp -r ../../../CnoflictResolution/target/classes/com ../../deploy/wan-space-US
+cp -r ../../../ConflictResolution/target/classes/com ../../deploy/wan-space-US
 cd ../../deploy
 
 # PLEASE replace localhost with relevant HOSTNAME in production

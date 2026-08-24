@@ -129,4 +129,13 @@ n.	View the WAN Gateway view in the web-UI
    
    p.	Rerun the USfeeder while viewing the gateway outbound stats above and see if you get redo log stats and traffic stats
    
-   ![snapshot](Pictures/Picture8.png) 
+   ![snapshot](Pictures/Picture8.png)
+
+&nbsp;  q.	Examine and Run /scripts/gs.sh/bat and wait for Spacedeck to start <br />   
+   ![snapshot](Pictures/Picture10.png)
+
+&nbsp;  r.	Click on wanSpaceUS space <br />   
+   ![snapshot](Pictures/Picture11.png)
+
+&nbsp;  s.	Go to Compare tab and click on Remote Space and fill the Space Name, Locator (host:port), Lookup group. Click on Compare <br />   
+![snapshot](Pictures/Picture12.png)
