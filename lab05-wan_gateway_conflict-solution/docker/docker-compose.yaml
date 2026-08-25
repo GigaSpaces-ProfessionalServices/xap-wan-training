@@ -1,0 +1,194 @@
+# WAN Gateway conflict-resolution topology, containerized: 6 containers, 2
+# sites, one flat network -- same active-active shape as lab02-active_active,
+# but UserConflictHandler resolves User conflicts deterministically
+# (EMEA-sourced discarded, US-sourced overrides). Deploy order matters here
+# more than in the other labs: space PUs deploy by default, gateway PUs are
+# profile-gated behind "gateway" so both sites can be fed independently
+# before the gateway link ever exists, guaranteeing a real conflict. See
+# ../README.md to build and run this, and build-notes.md for why it's built
+# this way.
+#
+# IMPORTANT: always re-run `mvn install` immediately before `docker compose
+# up` if target/ might have been cleaned -- Docker silently auto-creates a
+# missing bind-mount source as an empty root-owned directory rather than
+# erroring, which gs.sh will happily zip into a valid-but-empty deploy
+# artifact. The deploy scripts also fail loudly with an explicit check for
+# this (see deploy-us-space.sh/deploy-us-gateway.sh/deploy-emea-space.sh/
+# deploy-emea-gateway.sh).
+
+name: wan-gateway-conflict-resolution
+
+x-gs-image: &gs-image gigaspaces/smart-cache-enterprise:${GS_VERSION:-17.3.0}
+
+services:
+
+  # ---------------------------------------------------------------- US site --
+  us-manager:
+    image: *gs-image
+    hostname: us-manager
+    command: host run-agent --manager --restv3
+    environment:
+      GS_MANAGER_SERVERS: us-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      GS_OPTIONS_EXT: "-Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.1.10
+    ports:
+      - "19090:9090"   # REST V3 API / Swagger UI
+
+  us-space-gsc:
+    image: *gs-image
+    hostname: us-space-gsc
+    command: host run-agent --gsc=4
+    environment:
+      GS_MANAGER_SERVERS: us-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      GS_OPTIONS_EXT: "-Dcom.gs.zones=US-space -Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.1.21
+    depends_on:
+      - us-manager
+
+  us-gateway-gsc:
+    image: *gs-image
+    hostname: us-gateway-gsc
+    command: host run-agent --gsc=1
+    environment:
+      GS_MANAGER_SERVERS: us-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      GS_GSC_OPTIONS: "-Dcom.gs.zones=US-gateway -Dcom.sun.jini.reggie.initialUnicastDiscoveryPort=4174 -Dcom.gs.transport_protocol.lrmi.bind-port=8201"
+      GS_OPTIONS_EXT: "-Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.1.30
+    depends_on:
+      - us-manager
+
+  us-space-deployer:
+    image: *gs-image
+    entrypoint: /bin/bash
+    command: ["/scripts/deploy-us-space.sh"]
+    volumes:
+      - ./deploy-us-space.sh:/scripts/deploy-us-space.sh:ro
+      - ../BillBuddySpace/target/BillBuddySpace.jar:/deploy/BillBuddySpace.jar:ro
+    networks:
+      - wan-net
+    depends_on:
+      - us-manager
+      - us-space-gsc
+
+  us-gateway-deployer:
+    image: *gs-image
+    entrypoint: /bin/bash
+    command: ["/scripts/deploy-us-gateway.sh"]
+    volumes:
+      - ./deploy-us-gateway.sh:/scripts/deploy-us-gateway.sh:ro
+      - ../BillBuddyGateway/target/BillBuddyGateway.jar:/deploy/BillBuddyGateway.jar:ro
+    networks:
+      - wan-net
+    # No depends_on: us-gateway-gsc is always up by default, but this service
+    # is deliberately profile-gated -- see the top-of-file usage notes.
+    profiles: ["gateway"]
+
+  us-feeder:
+    build:
+      context: ../BillBuddyAccountFeeder
+    environment:
+      GS_LOCATORS: us-manager
+      SPACE_NAME: wanSpaceUS
+    networks:
+      - wan-net
+    profiles: ["feeder"]
+
+  # -------------------------------------------------------------- EMEA site --
+  emea-manager:
+    image: *gs-image
+    hostname: emea-manager
+    command: host run-agent --manager --restv3
+    environment:
+      GS_MANAGER_SERVERS: emea-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      GS_OPTIONS_EXT: "-Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.2.10
+    ports:
+      - "29090:9090"   # REST V3 API / Swagger UI
+
+  emea-space-gsc:
+    image: *gs-image
+    hostname: emea-space-gsc
+    command: host run-agent --gsc=4
+    environment:
+      GS_MANAGER_SERVERS: emea-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      GS_OPTIONS_EXT: "-Dcom.gs.zones=EMEA-space -Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.2.21
+    depends_on:
+      - emea-manager
+
+  emea-gateway-gsc:
+    image: *gs-image
+    hostname: emea-gateway-gsc
+    command: host run-agent --gsc=1
+    environment:
+      GS_MANAGER_SERVERS: emea-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      GS_GSC_OPTIONS: "-Dcom.gs.zones=EMEA-gateway -Dcom.sun.jini.reggie.initialUnicastDiscoveryPort=4174 -Dcom.gs.transport_protocol.lrmi.bind-port=8201"
+      GS_OPTIONS_EXT: "-Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.2.30
+    depends_on:
+      - emea-manager
+
+  emea-space-deployer:
+    image: *gs-image
+    entrypoint: /bin/bash
+    command: ["/scripts/deploy-emea-space.sh"]
+    volumes:
+      - ./deploy-emea-space.sh:/scripts/deploy-emea-space.sh:ro
+      - ../BillBuddySpace/target/BillBuddySpace.jar:/deploy/BillBuddySpace.jar:ro
+    networks:
+      - wan-net
+    depends_on:
+      - emea-manager
+      - emea-space-gsc
+
+  emea-gateway-deployer:
+    image: *gs-image
+    entrypoint: /bin/bash
+    command: ["/scripts/deploy-emea-gateway.sh"]
+    volumes:
+      - ./deploy-emea-gateway.sh:/scripts/deploy-emea-gateway.sh:ro
+      - ../BillBuddyGateway/target/BillBuddyGateway.jar:/deploy/BillBuddyGateway.jar:ro
+    networks:
+      - wan-net
+    profiles: ["gateway"]
+
+  emea-feeder:
+    build:
+      context: ../BillBuddyAccountFeeder
+    environment:
+      GS_LOCATORS: emea-manager
+      SPACE_NAME: wanSpaceEMEA
+    networks:
+      - wan-net
+    profiles: ["feeder"]
+
+networks:
+  wan-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16

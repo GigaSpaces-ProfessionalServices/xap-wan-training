@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.gigaspaces.wan.training</groupId>
+    <artifactId>wan-active-passive-topology</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>wan-active-passive-topology</name>
+    <packaging>pom</packaging>
+    <!-- Fully standalone lab, unrelated to lab02-active_active (the active-active
+         topology's own lab). BillBuddyModel/BillBuddyAccountFeeder are duplicated
+         here as sibling modules rather than shared across labs, matching how each
+         xap-wan-training-lab*-solution folder is independently self-contained. -->
+    <repositories>
+        <repository>
+          <id>org.openspaces</id>
+          <url>https://maven-repository.openspaces.org</url>
+        </repository>
+    </repositories>
+    <properties>
+        <gigaspaces.version>17.3.0</gigaspaces.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+    <modules>
+        <module>BillBuddyModel</module>
+        <module>BillBuddyAccountFeeder</module>
+        <module>BillBuddySpaceUS</module>
+        <module>BillBuddySpaceEMEA</module>
+        <module>BillBuddyGatewayUS</module>
+        <module>BillBuddyGatewayEMEA</module>
+    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.gigaspaces</groupId>
+            <artifactId>xap-openspaces</artifactId>
+            <version>${gigaspaces.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+                <version>3.14.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.7.1</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>

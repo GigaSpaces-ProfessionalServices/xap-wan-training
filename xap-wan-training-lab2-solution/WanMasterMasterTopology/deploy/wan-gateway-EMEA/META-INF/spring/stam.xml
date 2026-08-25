@@ -1,8 +1,0 @@
-<os-gateway:sink id="sink" local-gateway-name="NEWYORK"
-  gateway-lookups="gatewayLookups"
-  local-space-url="jini://*/*/myNYSpace" requires-bootstrap="true">
-  <os-gateway:sources>
-    <os-gateway:source name="LONDON" />
-    <os-gateway:source name="HONGKONG" />
-  </os-gateway:sources>
-</os-gateway:sink>

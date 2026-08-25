@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>lab05-solution</artifactId>
+        <groupId>com.gigaspaces.wan.training</groupId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>ConflictResolution</artifactId>
+    <packaging>jar</packaging>
+
+    <!-- No dependency on BillBuddyModel: UserConflictHandler only uses
+         com.gigaspaces.cluster.replication.gateway.conflict.* classes (from
+         xap-openspaces' own xap-datagrid transitive dependency), nothing from
+         the model. The original pom declared it anyway; dropped as genuinely
+         unused (same class of cleanup as dropping the unused
+         javax.persistence-api dependency from BillBuddyModel elsewhere in
+         this project). -->
+
+    <build>
+        <finalName>ConflictResolution</finalName>
+    </build>
+</project>
