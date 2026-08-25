@@ -1,0 +1,168 @@
+# WAN Gateway active-passive topology, containerized: 6 containers, 2 sites
+# (US active, EMEA passive), one flat network. See ../README.md to build and
+# run this, and build-notes.md for why it's built this way (network, module
+# split, packaging).
+#
+# IMPORTANT: always re-run `mvn install` immediately before `docker compose
+# up` if target/ might have been cleaned -- Docker silently auto-creates a
+# missing bind-mount source as an empty root-owned directory rather than
+# erroring, which gs.sh will happily zip into a valid-but-empty deploy
+# artifact. The deploy scripts also fail loudly with an explicit check for
+# this (see deploy-us.sh/deploy-emea.sh).
+
+x-gs-image: &gs-image gigaspaces/smart-cache-enterprise:${GS_VERSION:-17.3.0}
+
+services:
+
+  # -------------------------------------------------------------------- US site (active) --
+  us-manager:
+    image: *gs-image
+    hostname: us-manager
+    # --restv3 enables the modern REST Manager API on port 9090 (path
+    # /api/v3/...), alongside the older, deprecated v2 API on 8090 -- both
+    # stay active together. See lab02-active_active's docker-compose.yaml
+    # for the full reasoning.
+    command: host run-agent --manager --restv3
+    environment:
+      GS_MANAGER_SERVERS: us-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      GS_OPTIONS_EXT: "-Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.1.10
+    ports:
+      - "19090:9090"   # REST V3 API / Swagger UI
+
+  us-space-gsc:
+    image: *gs-image
+    hostname: us-space-gsc
+    command: host run-agent --gsc=4
+    environment:
+      GS_MANAGER_SERVERS: us-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      GS_OPTIONS_EXT: "-Dcom.gs.zones=US-space -Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.1.21
+    depends_on:
+      - us-manager
+
+  us-gateway-gsc:
+    image: *gs-image
+    hostname: us-gateway-gsc
+    command: host run-agent --gsc=1
+    environment:
+      GS_MANAGER_SERVERS: us-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      # See lab02-active_active's docker-compose.yaml for the full
+      # reasoning: pin the embedded-LUS discovery port (matches pu.xml's
+      # localLookupPort=4174) and the LRMI bind-port (matches
+      # localCommunicationPort=8201), GSC-scoped only via GS_GSC_OPTIONS.
+      GS_GSC_OPTIONS: "-Dcom.gs.zones=US-gateway -Dcom.sun.jini.reggie.initialUnicastDiscoveryPort=4174 -Dcom.gs.transport_protocol.lrmi.bind-port=8201"
+      GS_OPTIONS_EXT: "-Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.1.30
+    depends_on:
+      - us-manager
+
+  us-deployer:
+    image: *gs-image
+    entrypoint: /bin/bash
+    command: ["/scripts/deploy-us.sh"]
+    volumes:
+      - ./deploy-us.sh:/scripts/deploy-us.sh:ro
+      - ../BillBuddySpaceUS/target/BillBuddySpaceUS.jar:/deploy/BillBuddySpaceUS.jar:ro
+      - ../BillBuddyGatewayUS/target/BillBuddyGatewayUS.jar:/deploy/BillBuddyGatewayUS.jar:ro
+    networks:
+      - wan-net
+    depends_on:
+      - us-manager
+      - us-space-gsc
+      - us-gateway-gsc
+
+  us-feeder:
+    build:
+      context: ../BillBuddyAccountFeeder
+    environment:
+      GS_LOCATORS: us-manager
+      SPACE_NAME: wanSpaceUS
+    networks:
+      - wan-net
+    depends_on:
+      - us-deployer
+    profiles: ["feeder"]
+
+  # ------------------------------------------------------------------ EMEA site (passive) --
+  emea-manager:
+    image: *gs-image
+    hostname: emea-manager
+    # See the matching comment on us-manager.
+    command: host run-agent --manager --restv3
+    environment:
+      GS_MANAGER_SERVERS: emea-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      GS_OPTIONS_EXT: "-Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.2.10
+    ports:
+      - "29090:9090"   # REST V3 API / Swagger UI
+
+  emea-space-gsc:
+    image: *gs-image
+    hostname: emea-space-gsc
+    command: host run-agent --gsc=4
+    environment:
+      GS_MANAGER_SERVERS: emea-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      GS_OPTIONS_EXT: "-Dcom.gs.zones=EMEA-space -Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.2.21
+    depends_on:
+      - emea-manager
+
+  emea-gateway-gsc:
+    image: *gs-image
+    hostname: emea-gateway-gsc
+    command: host run-agent --gsc=1
+    environment:
+      GS_MANAGER_SERVERS: emea-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      # See the matching comment on us-gateway-gsc.
+      GS_GSC_OPTIONS: "-Dcom.gs.zones=EMEA-gateway -Dcom.sun.jini.reggie.initialUnicastDiscoveryPort=4174 -Dcom.gs.transport_protocol.lrmi.bind-port=8201"
+      GS_OPTIONS_EXT: "-Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.2.30
+    depends_on:
+      - emea-manager
+
+  emea-deployer:
+    image: *gs-image
+    entrypoint: /bin/bash
+    command: ["/scripts/deploy-emea.sh"]
+    volumes:
+      - ./deploy-emea.sh:/scripts/deploy-emea.sh:ro
+      - ../BillBuddySpaceEMEA/target/BillBuddySpaceEMEA.jar:/deploy/BillBuddySpaceEMEA.jar:ro
+      - ../BillBuddyGatewayEMEA/target/BillBuddyGatewayEMEA.jar:/deploy/BillBuddyGatewayEMEA.jar:ro
+    networks:
+      - wan-net
+    depends_on:
+      - emea-manager
+      - emea-space-gsc
+      - emea-gateway-gsc
+
+networks:
+  wan-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16

@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.gigaspaces.wan.training</groupId>
+    <artifactId>BillBuddySpaceUS</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>BillBuddySpaceUS</name>
+    <parent>
+        <groupId>com.gigaspaces.wan.training</groupId>
+        <artifactId>lab04-solution</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <dependencies>
+        <dependency>
+            <groupId>com.gigaspaces.wan.training.billbuddy.model</groupId>
+            <artifactId>BillBuddyModel</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Supplies the ReplicationFilter class, wired in via a plain bean in
+             pu.xml (<os-core:space-replication-filter>). Only wanSpaceUS has
+             this, wanSpaceEMEA does not, which is why these are two separate
+             modules rather than one shared PropertyPlaceholderConfigurer module
+             like BillBuddyGateway (the space PU here isn't just value-asymmetric
+             between sites, it's structurally asymmetric: an entire extra bean +
+             filter element exists only on the US side). -->
+        <dependency>
+            <groupId>com.gigaspaces.wan.training</groupId>
+            <artifactId>ReplicationFilter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <finalName>BillBuddySpaceUS</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <attach>false</attach>
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
