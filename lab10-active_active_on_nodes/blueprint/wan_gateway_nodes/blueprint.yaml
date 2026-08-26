@@ -1,0 +1,1 @@
+description: Generates the pair of pre-configured deploy scripts (one per node) for lab10-active_active_on_nodes's bare-metal/EC2 active-active WAN Gateway topology, driven by a single shared values.yaml so both nodes always agree on hosts, ports, and gateway names.

@@ -1,0 +1,40 @@
+gigaspaces:
+  version: 17.3.0
+  home: /home/ec2-user/gigaspaces-smart-cache-enterprise-17.3.0
+  license: tryme
+
+java:
+  home: /usr/lib/jvm/jre-17
+  # Compiler source/target for the generated Maven project - keep in sync with
+  # the actual JDK at java.home above.
+  version: 17
+
+# Every one of these ports/hosts/names is a value that used to have to be kept in
+# sync by hand across startGrid-*.sh and deploy-*.sh (and between the two nodes'
+# copies of those scripts). Fill this file in once and every generated script
+# agrees with every other one.
+
+siteA:
+  gatewayName: US
+  spaceName: wanSpaceUS
+  # Address the OTHER node (and the operator) can reach this node at.
+  host: 172.31.4.198
+
+siteB:
+  gatewayName: EMEA
+  spaceName: wanSpaceEMEA
+  host: 172.31.9.193
+
+gateway:
+  # Each node runs a space-side manager+GSCs AND a separate 1-GSC gateway agent in
+  # the same OS process space, so the gateway agent's discovery/communication ports
+  # must differ from the space side's defaults (4174/8200) - this is the single
+  # most common source of "the gateway never connects" on a fresh 2-node setup.
+  discoveryPort: 44174
+  communicationPort: 48200
+
+space:
+  # The manager's own default Jini lookup port - what a client (feed.sh) needs to
+  # target to find the deployed space. Not the same port as the gateway's own
+  # discovery port above.
+  managerLookupPort: 4174

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:os-gateway="http://www.openspaces.org/schema/core/gateway"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.openspaces.org/schema/core/gateway http://www.openspaces.org/schema/core/gateway/openspaces-gateway.xsd">
+
+    <!-- One shared module, deployed once per site (node) with different -p overrides.
+         Every value below is expected to be supplied at deploy time by the
+         blueprint-generated deploy scripts - the defaults here only matter if one
+         is omitted. localLookupHost/Port and localCommunicationPort MUST match the
+         discovery/communication ports the gateway agent on this same node was
+         actually started with (see start-grid script) - a mismatch here is the
+         single most common cause of "gateway never connects" in this lab. -->
+    <bean id="propertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreResourceNotFound" value="true" />
+        <property name="properties">
+            <props>
+                <prop key="localGatewayName">US</prop>
+                <prop key="remoteGatewayName">EMEA</prop>
+                <prop key="localSpaceUrl">jini://*/*/wanSpaceUS</prop>
+                <prop key="localLookupHost">localhost</prop>
+                <prop key="localLookupPort">44174</prop>
+                <prop key="localCommunicationPort">48200</prop>
+                <prop key="remoteLookupHost">localhost</prop>
+                <prop key="remoteLookupPort">44174</prop>
+                <prop key="remoteCommunicationPort">48200</prop>
+            </props>
+        </property>
+    </bean>
+
+    <os-gateway:delegator id="delegator" local-gateway-name="${localGatewayName}" gateway-lookups="gatewayLookups"
+                          start-embedded-lus="true">
+        <os-gateway:delegation target="${remoteGatewayName}"/>
+    </os-gateway:delegator>
+
+    <os-gateway:sink id="sink" local-gateway-name="${localGatewayName}" gateway-lookups="gatewayLookups"
+                     start-embedded-lus="true" local-space-url="${localSpaceUrl}">
+        <os-gateway:sources>
+            <os-gateway:source name="${remoteGatewayName}"/>
+        </os-gateway:sources>
+    </os-gateway:sink>
+
+    <os-gateway:lookups id="gatewayLookups">
+        <os-gateway:lookup gateway-name="${localGatewayName}"  host="${localLookupHost}"  discovery-port="${localLookupPort}"  communication-port="${localCommunicationPort}"/>
+        <os-gateway:lookup gateway-name="${remoteGatewayName}" host="${remoteLookupHost}" discovery-port="${remoteLookupPort}" communication-port="${remoteCommunicationPort}"/>
+    </os-gateway:lookups>
+
+</beans>

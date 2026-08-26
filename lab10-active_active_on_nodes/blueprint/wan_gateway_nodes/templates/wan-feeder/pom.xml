@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.gigaspaces.wan.training</groupId>
+    <artifactId>wan-feeder</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>wan-feeder</name>
+    <parent>
+        <groupId>com.gigaspaces.wan.training</groupId>
+        <artifactId>wan-active-active-on-nodes</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <dependencies>
+        <!-- Overrides the reactor's "provided" scope: this jar is a self-contained
+             client meant to run from any machine that can reach the grid over the
+             network (your laptop, a bastion host, either node) - it doesn't rely on
+             a local GS_HOME install for its classpath. -->
+        <dependency>
+            <groupId>org.gigaspaces</groupId>
+            <artifactId>xap-openspaces</artifactId>
+            <version>${gigaspaces.version}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <finalName>wan-feeder</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <!-- Without this, the assembly's own output file collides with
+                         this module's default packaged jar (both named
+                         target/wan-feeder.jar via <finalName> above), and the
+                         jar-with-dependencies descriptor's default
+                         useProjectArtifact=true tries to read that same file as
+                         an input while it's mid-write - "zip file is empty". -->
+                    <useProjectArtifact>false</useProjectArtifact>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.gigaspaces.training.wan.feeder.DocumentFeeder</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
