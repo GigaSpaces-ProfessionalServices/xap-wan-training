@@ -22,7 +22,7 @@ services:
     # /api/v3/...), alongside the older, deprecated v2 API on 8090 -- both
     # stay active together. See lab02-active_active's docker-compose.yaml
     # for the full reasoning.
-    command: host run-agent --manager --restv3
+    command: host run-agent --manager --restv3 --webui
     environment:
       GS_MANAGER_SERVERS: us-manager
       GS_LICENSE: "tryme"
@@ -88,7 +88,7 @@ services:
     build:
       context: ../BillBuddyAccountFeeder
     environment:
-      GS_LOCATORS: us-manager
+      LOCATORS: us-manager
       SPACE_NAME: wanSpaceUS
     networks:
       - wan-net
@@ -101,7 +101,7 @@ services:
     image: *gs-image
     hostname: emea-manager
     # See the matching comment on us-manager.
-    command: host run-agent --manager --restv3
+    command: host run-agent --manager --restv3 --webui
     environment:
       GS_MANAGER_SERVERS: emea-manager
       GS_LICENSE: "tryme"

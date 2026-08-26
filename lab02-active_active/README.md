@@ -1,5 +1,7 @@
 # lab02-active_active - WAN Gateway Basics
 
+For applications that need to serve users in multiple regions at once, active-active WAN replication keeps both sites live and writable, so end users can read and write against a geographically local cluster and experience low latency.
+
 This lab covers the WAN Gateway active-active topology: two sites, US and EMEA, each fully able to accept writes and replicate them out to the other. The whole grid runs as Docker containers. This is a solution lab, so everything described below is already implemented and working.
 
 ## Lab Goals

@@ -1,5 +1,7 @@
 # lab01-active_passive
 
+Active-passive WAN replication can be one of the strategies to deal with disaster recovery: a live site keeps a geographically remote standby continuously in sync, so there's always a safe copy ready if the primary site fails.
+
 This lab covers the WAN Gateway active-passive topology: two sites, US and EMEA, connected by one-directional replication. The whole grid runs as Docker containers. This is a solution lab, so everything described below is already implemented and working.
 
 ## Lab Goals
@@ -71,6 +73,24 @@ docker run --rm --network docker_wan-net --entrypoint /bin/bash \
 ```
 
 EMEA should show the same records US was fed. There is no reverse-direction feeder: EMEA has no delegator, so nothing ever replicates back to US.
+
+### Visual verification: the Web Management Console's Compare view
+
+Both managers also serve the GigaSpaces Web Management Console at their bare root URL (`--webui`, enabled alongside `--restv3` in `docker-compose.yaml`) -- a friendlier alternative to the CLI query above for the same check:
+
+1. Open http://localhost:19090/ (the US manager) in a browser. Go to Management > Spaces.
+
+   ![Web Management Console Spaces Status view listing wanSpaceEMEA and wanSpaceUS, both Active](Pictures/Picture10.png)
+
+2. Click `wanSpaceUS` to open its Space Types view.
+
+   ![wanSpaceUS Space Types view listing Merchant, Payment, and User](Pictures/Picture11.png)
+
+3. Open the Compare tab, toggle to Remote, and fill in the EMEA side: Space Name `wanSpaceEMEA`, Locator `emea-manager:4174`, Lookup Group can be left blank. Click Compare.
+
+   ![Compare tab showing wanSpaceUS vs wanSpaceEMEA with a "Spaces match" banner and matching Merchant/Payment/User counts](Pictures/Picture12.png)
+
+Once EMEA has been fed the same records, the banner should read "Spaces match -- selected types are identical", with matching Payment/User/Merchant counts on both sides.
 
 - US manager REST V3 API / Swagger UI: http://localhost:19090/api/v3/swagger-ui/index.html
 - EMEA manager REST V3 API / Swagger UI: http://localhost:29090/api/v3/swagger-ui/index.html

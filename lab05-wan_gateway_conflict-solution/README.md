@@ -1,6 +1,6 @@
 # lab05-wan_gateway_conflict-solution - WAN Gateway Conflict Resolution
 
-This lab covers WAN Gateway conflict resolution: two sites, US and EMEA, where a custom handler decides how to reconcile a `User` record that was modified independently on both sites before the gateway link ever existed. The whole grid runs as Docker containers. This is a solution lab, so everything described below is already implemented and working.
+Two sites that operated independently before a WAN link connected them, whether during a network partition or before the link was even set up, can end up with different values for the same record. Without an explicit policy for which value wins, the two sites silently overwrite each other's data the moment they reconnect. This lab shows how a conflict handler makes that outcome deterministic instead of a coin flip.
 
 ## Lab Goals
 

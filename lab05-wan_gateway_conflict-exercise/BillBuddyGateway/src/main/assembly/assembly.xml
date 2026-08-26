@@ -1,0 +1,32 @@
+<assembly>
+  <id>assemble-pu</id>
+  <formats>
+    <format>jar</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>target/classes</directory>
+      <lineEnding>keep</lineEnding>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>**/**</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+  <dependencySets>
+    <!-- Only ConflictResolution needs to be bundled: pu.xml never references
+         BillBuddyModel classes directly (kept as a declared dependency only
+         for consistency with the other gateway modules in this project,
+         same as before, never functionally needed), and ConflictResolution
+         itself has no dependencies of its own to worry about transitively. -->
+    <dependencySet>
+      <useProjectArtifact>false</useProjectArtifact>
+      <useTransitiveDependencies>false</useTransitiveDependencies>
+      <outputDirectory>lib</outputDirectory>
+      <excludes>
+        <exclude>com.gigaspaces.wan.training.billbuddy.model:BillBuddyModel</exclude>
+      </excludes>
+    </dependencySet>
+  </dependencySets>
+</assembly>

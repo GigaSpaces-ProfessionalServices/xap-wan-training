@@ -1,6 +1,6 @@
 # lab03-wan_bootstrap-solution - WAN Bootstrapping
 
-This lab covers WAN Gateway bootstrapping: two sites, US and EMEA, where one site (US) is deliberately blocked from receiving replicated data until an explicit bootstrap call pulls in the other site's existing data. The whole grid runs as Docker containers. This is a solution lab, so everything described below is already implemented and working.
+A site taken down for extended maintenance, or a new site added after the other has been running for a while, can fall too far behind for ordinary replication to close the gap. WAN bootstrapping handles that case by pulling the other site's existing dataset in with one explicit call, then handing off to normal replication for everything after.
 
 ## Lab Goals
 

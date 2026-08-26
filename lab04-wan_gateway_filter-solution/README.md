@@ -1,6 +1,6 @@
 # lab04-wan_gateway_filter-solution - WAN Gateway Filter
 
-This lab covers a WAN Gateway replication filter: two sites, US and EMEA, where a custom filter on US's space decides which `User` records actually replicate to EMEA. The whole grid runs as Docker containers. This is a solution lab, so everything described below is already implemented and working.
+Not every record belongs on every continent. Data residency rules, or simply the cost of shipping data that a remote site will never use, often mean only a subset of what's written at one site should replicate to another. WAN Gateway replication filters let a site decide that on a per-object basis, instead of replicating everything indiscriminately.
 
 ## Lab Goals
 
