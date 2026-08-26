@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:os-gateway="http://www.openspaces.org/schema/core/gateway"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.openspaces.org/schema/core/gateway
+       http://www.openspaces.org/schema/core/gateway/openspaces-gateway.xsd">
+
+    <!-- One shared module for both sites, deployed twice (once per site) with
+         different -p overrides instead of maintaining two near-identical folders.
+         Defaults below (US) are only used if a value isn't passed at deploy time.
+
+         The sink is declared as a plain bean (GatewaySinkFactoryBean), not
+         <os-gateway:sink>, so that requiresBootstrap can be placeholder-driven.
+         requires-bootstrap is XSD-typed as boolean on the os-gateway:sink
+         element, and Xerces validates a raw "${requiresBootstrap}" placeholder
+         against that type at XML-parse time, before Spring's
+         PropertyPlaceholderConfigurer ever runs, rejecting it. A plain bean's
+         <property> value stays an ordinary String until Spring's own
+         type-conversion runs, which happens after placeholder resolution, so
+         it accepts the placeholder fine. Pattern confirmed against GigaSpaces'
+         own reference example (same repo used by wangateway_examples-main):
+         demo/v15.8/project/gateway/src/main/resources/META-INF/spring/pu.xml,
+         which has this exact bean instead of os-gateway:sink with the same
+         explanation in its own comment. -->
+    <bean id="propertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreResourceNotFound" value="true" />
+        <property name="properties">
+            <props>
+                <prop key="localGatewayName">US</prop>
+                <prop key="remoteGatewayName">EMEA</prop>
+                <prop key="localSpaceUrl">jini://*/*/wanSpaceUS</prop>
+                <prop key="requiresBootstrap">false</prop>
+                <prop key="localLookupHost">us-gateway-gsc</prop>
+                <prop key="localLookupPort">4174</prop>
+                <prop key="localCommunicationPort">8201</prop>
+                <prop key="remoteLookupHost">emea-gateway-gsc</prop>
+                <prop key="remoteLookupPort">4174</prop>
+                <prop key="remoteCommunicationPort">8201</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="remoteGatewaySource" class="org.openspaces.core.gateway.GatewaySource">
+        <property name="name" value="${remoteGatewayName}" />
+    </bean>
+
+    <os-gateway:delegator id="delegator" local-gateway-name="${localGatewayName}" gateway-lookups="gatewayLookups"
+                          start-embedded-lus="true">
+        <os-gateway:delegation target="${remoteGatewayName}"/>
+    </os-gateway:delegator>
+
+    <bean id="sink" class="org.openspaces.core.gateway.GatewaySinkFactoryBean">
+        <property name="localGatewayName" value="${localGatewayName}" />
+        <property name="gatewayLookups" ref="gatewayLookups" />
+        <property name="startEmbeddedLus" value="true" />
+        <property name="localSpaceUrl" value="${localSpaceUrl}" />
+        <!-- TODO: wire the sink's requiresBootstrap property to the ${requiresBootstrap}
+             placeholder above, so US's deploy-time override actually takes effect. -->
+        <property name="gatewaySources">
+            <list value-type="org.openspaces.core.gateway.GatewaySource">
+                <ref bean="remoteGatewaySource" />
+            </list>
+        </property>
+    </bean>
+
+    <os-gateway:lookups id="gatewayLookups">
+        <os-gateway:lookup gateway-name="${localGatewayName}"  host="${localLookupHost}"  discovery-port="${localLookupPort}"  communication-port="${localCommunicationPort}"/>
+        <os-gateway:lookup gateway-name="${remoteGatewayName}" host="${remoteLookupHost}" discovery-port="${remoteLookupPort}" communication-port="${remoteCommunicationPort}"/>
+    </os-gateway:lookups>
+
+</beans>

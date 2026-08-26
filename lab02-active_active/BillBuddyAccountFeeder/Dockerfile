@@ -6,6 +6,6 @@ FROM eclipse-temurin:17-jre
 WORKDIR /app
 COPY target/BillBuddyAccountFeeder-jar-with-dependencies.jar app.jar
 
-# GS_LOCATORS: comma-separated manager host(s), e.g. "us-manager"
-# SPACE_NAME:  the space to feed, e.g. "wanSpaceUS"
-ENTRYPOINT ["sh", "-c", "java -Dcom.gs.jini_lus.locators=${GS_LOCATORS} -jar app.jar ${SPACE_NAME}"]
+# LOCATORS:   comma-separated manager host(s), e.g. "us-manager"
+# SPACE_NAME: the space to feed, e.g. "wanSpaceUS"
+ENTRYPOINT ["sh", "-c", "java -Dcom.gs.jini_lus.locators=${LOCATORS} -jar app.jar ${SPACE_NAME}"]

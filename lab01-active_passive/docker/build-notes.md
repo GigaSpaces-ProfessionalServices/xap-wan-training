@@ -4,7 +4,7 @@ Implementation rationale behind this lab's Docker setup. Not needed to run the l
 
 ## Why a flat network, not segmented
 
-US containers are in the `172.28.1.x` range, EMEA in `172.28.2.x`, purely by naming convention - there's no real network-level isolation between them. This is a deliberate choice, not an oversight: XAP's `GS_NIC_ADDRESS` is JVM-wide, used to both bind and advertise every LRMI export in a process, including the embedded gateway LUS. A dual-homed gateway GSC would need to be reachable by both its own site's manager and the remote gateway, and a single address can't satisfy both if those live on separate, non-routed subnets. Flattening to one shared network removes that constraint entirely. See `lab02-active_active/docker/README.md`'s "Why flat, not segmented" section for the fuller history of this decision.
+US containers are in the `172.28.1.x` range, EMEA in `172.28.2.x`, purely by naming convention - there's no real network-level isolation between them. This is a deliberate choice, not an oversight: XAP's `GS_NIC_ADDRESS` is JVM-wide, used to both bind and advertise every LRMI export in a process, including the embedded gateway LUS. A dual-homed gateway GSC would need to be reachable by both its own site's manager and the remote gateway, and a single address can't satisfy both if those live on separate, non-routed subnets. Flattening to one shared network removes that constraint entirely. See `lab02-active_active/docker/build-notes.md`'s "Why a flat network, not segmented" section for the fuller history of this decision.
 
 ## Why 4 separate Maven modules instead of 2
 

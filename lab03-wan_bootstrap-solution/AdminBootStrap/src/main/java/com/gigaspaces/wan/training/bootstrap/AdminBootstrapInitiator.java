@@ -11,9 +11,9 @@ import org.openspaces.admin.gateway.GatewaySinkSource;
 public class AdminBootstrapInitiator {
 
 	public static void main(String[] args) {
-		String locators = System.getenv("GS_LOCATORS");
+		String locators = System.getenv("LOCATORS");
 		if (locators == null || locators.isEmpty()) {
-			System.err.println("Usage: set GS_LOCATORS (e.g. us-manager) before running.");
+			System.err.println("Usage: set LOCATORS (e.g. us-manager) before running.");
 			System.exit(1);
 		}
 

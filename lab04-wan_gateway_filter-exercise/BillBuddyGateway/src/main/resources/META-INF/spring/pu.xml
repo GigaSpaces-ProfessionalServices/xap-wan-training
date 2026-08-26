@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:os-gateway="http://www.openspaces.org/schema/core/gateway"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.openspaces.org/schema/core/gateway
+       http://www.openspaces.org/schema/core/gateway/openspaces-gateway.xsd">
+
+    <!-- One shared module for both sites, deployed twice (once per site) with
+         different -p overrides instead of maintaining two near-identical folders.
+         Defaults below (US) are only used if a value isn't passed at deploy time. -->
+    <bean id="propertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreResourceNotFound" value="true" />
+        <property name="properties">
+            <props>
+                <prop key="localGatewayName">US</prop>
+                <prop key="remoteGatewayName">EMEA</prop>
+                <prop key="localSpaceUrl">jini://*/*/wanSpaceUS</prop>
+                <prop key="localLookupHost">us-gateway-gsc</prop>
+                <prop key="localLookupPort">4174</prop>
+                <prop key="localCommunicationPort">8201</prop>
+                <prop key="remoteLookupHost">emea-gateway-gsc</prop>
+                <prop key="remoteLookupPort">4174</prop>
+                <prop key="remoteCommunicationPort">8201</prop>
+            </props>
+        </property>
+    </bean>
+
+    <os-gateway:delegator id="delegator" local-gateway-name="${localGatewayName}" gateway-lookups="gatewayLookups"
+                          start-embedded-lus="true">
+        <os-gateway:delegation target="${remoteGatewayName}"/>
+    </os-gateway:delegator>
+
+    <os-gateway:sink id="sink" local-gateway-name="${localGatewayName}" gateway-lookups="gatewayLookups"
+                     start-embedded-lus="true" local-space-url="${localSpaceUrl}">
+        <os-gateway:sources>
+            <os-gateway:source name="${remoteGatewayName}"/>
+        </os-gateway:sources>
+    </os-gateway:sink>
+
+    <os-gateway:lookups id="gatewayLookups">
+        <os-gateway:lookup gateway-name="${localGatewayName}"  host="${localLookupHost}"  discovery-port="${localLookupPort}"  communication-port="${localCommunicationPort}"/>
+        <os-gateway:lookup gateway-name="${remoteGatewayName}" host="${remoteLookupHost}" discovery-port="${remoteLookupPort}" communication-port="${remoteCommunicationPort}"/>
+    </os-gateway:lookups>
+
+</beans>
