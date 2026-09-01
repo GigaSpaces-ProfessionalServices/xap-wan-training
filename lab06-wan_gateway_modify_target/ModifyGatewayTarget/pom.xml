@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>lab06-solution</artifactId>
+        <groupId>com.gigaspaces.wan.training</groupId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>ModifyGatewayTarget</artifactId>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <!-- Overrides the reactor's "provided" scope, same reason as
+             BillBuddyAccountFeeder: this jar (and the docker uber-jar below)
+             needs to actually contain XAP client classes to run standalone
+             in a lean container. -->
+        <dependency>
+            <groupId>org.gigaspaces</groupId>
+            <artifactId>xap-openspaces</artifactId>
+            <version>${gigaspaces.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Supplies AdminFactory/Space/GatewayTarget. Resolves from the
+             org.openspaces repository declared in the root pom (the same one
+             xap-openspaces itself resolves from). It's not on Maven Central,
+             but IS on GigaSpaces' own repo, confirmed by resolving it
+             directly (same dependency already proven working in
+             lab03-wan_bootstrap-solution/AdminBootStrap). -->
+        <dependency>
+            <groupId>com.gigaspaces</groupId>
+            <artifactId>xap-admin</artifactId>
+            <version>${gigaspaces.version}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>ModifyGatewayTarget</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <!-- Self-contained jar for the Docker image: bundles XAP
+                             admin/client classes so the runtime container needs
+                             nothing beyond a JRE. -->
+                        <id>docker-uber-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <archive>
+                                <manifest>
+                                    <mainClass>com.gigaspaces.wan.training.modifytarget.ModifyGatewayTargetInitiator</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

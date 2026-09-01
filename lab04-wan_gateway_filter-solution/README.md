@@ -78,7 +78,7 @@ docker compose --profile feeder run --rm us-feeder
 EMEA should only have the Europe subset of the Users fed into US; every other object type replicates in full.
 
 ```bash
-docker run --rm --network docker_wan-net --entrypoint /bin/bash \
+docker run --rm --network wan-gateway-filter_wan-net --entrypoint /bin/bash \
   gigaspaces/smart-cache-enterprise:17.3.0 -c \
   "/opt/gigaspaces/bin/gs.sh --server=emea-manager space query wanSpaceEMEA \
    com.gigaspaces.training.billbuddy.model.User --max-results=50 --columns=userAccountId,location"

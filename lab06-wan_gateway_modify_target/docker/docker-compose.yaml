@@ -1,0 +1,193 @@
+# WAN Gateway modify-target topology, containerized: 6 containers, 2 sites
+# (US, EMEA), one flat network -- same active-active grid shape as
+# lab02-active_active, but BOTH spaces deploy with an EMPTY gateway-target
+# list even though both gateways (delegator+sink) come up fully connected to
+# each other. The whole point of this lab is using the Admin API
+# (ModifyGatewayTarget) to add and remove wanSpaceUS's outbound target to
+# EMEA at runtime, without ever redeploying the space.
+# See ../README.md to build and run this, and build-notes.md for why it's
+# built this way.
+#
+# IMPORTANT: always re-run `mvn install` immediately before `docker compose
+# up` if target/ might have been cleaned -- Docker silently auto-creates a
+# missing bind-mount source as an empty root-owned directory rather than
+# erroring, which gs.sh will happily zip into a valid-but-empty deploy
+# artifact. The deploy scripts also fail loudly with an explicit check for
+# this (see deploy-us.sh/deploy-emea.sh).
+
+name: wan-modify-target
+
+x-gs-image: &gs-image gigaspaces/smart-cache-enterprise:${GS_VERSION:-17.3.0}
+
+services:
+
+  # -------------------------------------------------------------- EMEA site --
+  emea-manager:
+    image: *gs-image
+    hostname: emea-manager
+    command: host run-agent --manager --restv3 --webui
+    environment:
+      GS_MANAGER_SERVERS: emea-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      GS_OPTIONS_EXT: "-Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.2.10
+    ports:
+      - "29090:9090"   # REST V3 API / Swagger UI
+
+  emea-space-gsc:
+    image: *gs-image
+    hostname: emea-space-gsc
+    command: host run-agent --gsc=4
+    environment:
+      GS_MANAGER_SERVERS: emea-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      GS_OPTIONS_EXT: "-Dcom.gs.zones=EMEA-space -Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.2.21
+    depends_on:
+      - emea-manager
+
+  emea-gateway-gsc:
+    image: *gs-image
+    hostname: emea-gateway-gsc
+    command: host run-agent --gsc=1
+    environment:
+      GS_MANAGER_SERVERS: emea-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      # Pins the embedded-LUS discovery port (matches BillBuddyGateway/pu.xml's
+      # localLookupPort=4174) and the LRMI bind-port (8201, matches
+      # localCommunicationPort=8201) explicitly on the GSC child JVM only.
+      GS_GSC_OPTIONS: "-Dcom.gs.zones=EMEA-gateway -Dcom.sun.jini.reggie.initialUnicastDiscoveryPort=4174 -Dcom.gs.transport_protocol.lrmi.bind-port=8201"
+      GS_OPTIONS_EXT: "-Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.2.30
+    depends_on:
+      - emea-manager
+
+  emea-deployer:
+    image: *gs-image
+    entrypoint: /bin/bash
+    command: ["/scripts/deploy-emea.sh"]
+    volumes:
+      - ./deploy-emea.sh:/scripts/deploy-emea.sh:ro
+      - ../BillBuddySpace/target/BillBuddySpace.jar:/deploy/BillBuddySpace.jar:ro
+      - ../BillBuddyGateway/target/BillBuddyGateway.jar:/deploy/BillBuddyGateway.jar:ro
+    networks:
+      - wan-net
+    depends_on:
+      - emea-manager
+      - emea-space-gsc
+      - emea-gateway-gsc
+
+  # ---------------------------------------------------------------- US site --
+  us-manager:
+    image: *gs-image
+    hostname: us-manager
+    command: host run-agent --manager --restv3 --webui
+    environment:
+      GS_MANAGER_SERVERS: us-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      GS_OPTIONS_EXT: "-Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.1.10
+    ports:
+      - "19090:9090"   # REST V3 API / Swagger UI
+
+  us-space-gsc:
+    image: *gs-image
+    hostname: us-space-gsc
+    command: host run-agent --gsc=4
+    environment:
+      GS_MANAGER_SERVERS: us-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      GS_OPTIONS_EXT: "-Dcom.gs.zones=US-space -Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.1.21
+    depends_on:
+      - us-manager
+
+  us-gateway-gsc:
+    image: *gs-image
+    hostname: us-gateway-gsc
+    command: host run-agent --gsc=1
+    environment:
+      GS_MANAGER_SERVERS: us-manager
+      GS_LICENSE: "tryme"
+      GS_NIC_ADDRESS: "#local:ip#"
+      GS_GSC_OPTIONS: "-Dcom.gs.zones=US-gateway -Dcom.sun.jini.reggie.initialUnicastDiscoveryPort=4174 -Dcom.gs.transport_protocol.lrmi.bind-port=8201"
+      GS_OPTIONS_EXT: "-Dcom.gs.multicast.enabled=false"
+    networks:
+      wan-net:
+        ipv4_address: 172.28.1.30
+    depends_on:
+      - us-manager
+
+  us-deployer:
+    image: *gs-image
+    entrypoint: /bin/bash
+    command: ["/scripts/deploy-us.sh"]
+    volumes:
+      - ./deploy-us.sh:/scripts/deploy-us.sh:ro
+      - ../BillBuddySpace/target/BillBuddySpace.jar:/deploy/BillBuddySpace.jar:ro
+      - ../BillBuddyGateway/target/BillBuddyGateway.jar:/deploy/BillBuddyGateway.jar:ro
+    networks:
+      - wan-net
+    depends_on:
+      - us-manager
+      - us-space-gsc
+      - us-gateway-gsc
+
+  # -------------------------------------------------------------- operator --
+  # One-shot feeder: writes one phase of BillBuddy data (users, merchants, or
+  # payments) into wanSpaceUS. Run three times across the lab, once per phase,
+  # with FEED_SET overridden per invocation, e.g.:
+  #   docker compose --profile feeder run --rm -e FEED_SET=users us-feeder
+  us-feeder:
+    build:
+      context: ../BillBuddyAccountFeeder
+    environment:
+      LOCATORS: us-manager
+      SPACE_NAME: wanSpaceUS
+      FEED_SET: all
+    networks:
+      - wan-net
+    depends_on:
+      - us-deployer
+    profiles: ["feeder"]
+
+  # One-shot admin client: adds or removes wanSpaceUS's outbound gateway
+  # target to EMEA via the Admin API, without redeploying anything. Run twice
+  # across the lab, with ACTION overridden per invocation, e.g.:
+  #   docker compose --profile admin run --rm -e ACTION=add modify-target
+  #   docker compose --profile admin run --rm -e ACTION=remove modify-target
+  modify-target:
+    build:
+      context: ../ModifyGatewayTarget
+    environment:
+      LOCATORS: us-manager
+      SPACE_NAME: wanSpaceUS
+      GATEWAY_NAME: EMEA
+      ACTION: add
+    networks:
+      - wan-net
+    depends_on:
+      - us-deployer
+    profiles: ["admin"]
+
+networks:
+  wan-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
