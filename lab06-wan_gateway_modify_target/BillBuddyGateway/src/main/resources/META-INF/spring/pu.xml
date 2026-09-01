@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- Note: description is used to infer processing unit type. There's no
+         official "gateway" pu-type in GigaSpaces' own vocabulary (only
+         stateless/stateful/mirror appear anywhere in the product), and this
+         string isn't parsed by any XAP Java class - it's a documentation-only
+         convention read by external tooling, not the deploying GSC's PU
+         bootstrap itself. See docker/build-notes.md for how that was
+         confirmed. Used here as an honest descriptive label anyway. -->
+    <description>pu-type=gateway</description>
+    <!-- Enable Spring annotation support -->
+    <context:annotation-config/>
+    <!-- Bootstrap service configuration -->
+    <bean class="com.gigaspaces.wan.training.gateway.ServiceConfig" />
+</beans>

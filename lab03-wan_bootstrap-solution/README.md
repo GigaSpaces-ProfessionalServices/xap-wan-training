@@ -72,7 +72,7 @@ docker compose --profile bootstrap run --rm bootstrap-initiator
 Before step 5, `wanSpaceUS` has 0 objects even though the gateway PU is `INTACT` and connected, confirming `requires-bootstrap="true"` genuinely blocks automatic replication rather than being a no-op flag. After step 5, `wanSpaceUS` should have exactly the same record counts as `wanSpaceEMEA`.
 
 ```bash
-docker run --rm --network docker_wan-net --entrypoint /bin/bash \
+docker run --rm --network wan-bootstrap_wan-net --entrypoint /bin/bash \
   gigaspaces/smart-cache-enterprise:17.3.0 -c \
   "/opt/gigaspaces/bin/gs.sh --server=us-manager space info --type-stats wanSpaceUS"
 ```

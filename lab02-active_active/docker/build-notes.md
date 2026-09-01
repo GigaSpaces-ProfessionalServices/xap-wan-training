@@ -4,7 +4,7 @@ Implementation rationale behind this lab's Docker setup. Not needed to run the l
 
 ## Why a flat network, not segmented
 
-An earlier design used 3 separate Docker networks (`us-internal`/`emea-internal`/a `wan-link` network joined only by the two gateway GSCs) to more realistically model "only the gateway crosses sites." That hit a real wall: XAP's `GS_NIC_ADDRESS` is JVM-wide - one address used to both bind and advertise every LRMI export in that process, including the embedded gateway LUS. A dual-homed gateway GSC needs to be reachable by both its own site's manager and the remote gateway; with those on disjoint, non-routed subnets, a single address can't satisfy both. Flattening the network to one shared subnet (the Docker-Compose equivalent of VPC peering between two cloud subnets) removes that constraint entirely.
+Segmenting the network per site - joined only by the two gateway GSCs, so only gateway traffic crosses sites - is closer to how a production WAN Gateway deployment usually separates its sites. In this Docker lab environment specifically, that runs into a real constraint: XAP's `GS_NIC_ADDRESS` is JVM-wide - one address used to both bind and advertise every network export in that process, including the embedded gateway lookup service. A dual-homed gateway GSC needs to be reachable by both its own site's manager and the remote gateway; with those on disjoint, non-routed subnets, a single address can't satisfy both. Flattening the network to one shared subnet (the Docker-Compose equivalent of VPC peering between two cloud subnets) removes that constraint entirely for the purposes of this lab.
 
 ## Why one shared module deployed twice, not a module per site
 

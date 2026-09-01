@@ -96,7 +96,7 @@ docker compose logs us-gateway-gsc emea-gateway-gsc | grep -i resolution
 Every `User` record on both sides should now match US's original values.
 
 ```bash
-docker run --rm --network docker_wan-net --entrypoint /bin/bash \
+docker run --rm --network wan-gateway-conflict-resolution_wan-net --entrypoint /bin/bash \
   gigaspaces/smart-cache-enterprise:17.3.0 -c \
   "/opt/gigaspaces/bin/gs.sh --server=us-manager space query wanSpaceUS \
    com.gigaspaces.training.billbuddy.model.User --max-results=50 --columns=userAccountId,location"
